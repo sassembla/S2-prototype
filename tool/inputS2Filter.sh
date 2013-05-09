@@ -1,1 +1,1 @@
-/Users/sassembla/Desktop/tool/nnotif -t FILTER_INPUT_IDENTITY -f /Users/sassembla/Desktop/tool/ScalaFilter.txt -o ./nnotif.log --ignoretabs 4 --dontsplitbyline
+./nnotif -t FILTER_INPUT_IDENTITY -f ./ScalaFilter.txt -o ./nnotif.log --ignoretabs 4 --dontsplitbyline
