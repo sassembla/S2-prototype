@@ -1,3 +1,4 @@
+//SocketRoundaboutの設定ファイル。SocketRoundabout -s このファイル　で通るはず。
 
 //STからのWS経由In / Out
 id:FromSTWS type:0 destination:ws://127.0.0.1:8823
