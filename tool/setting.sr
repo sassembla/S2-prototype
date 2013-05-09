@@ -1,0 +1,26 @@
+
+//STからのWS経由In / Out
+id:FromSTWS type:0 destination:ws://127.0.0.1:8823
+
+//STからのOutを受けてnnotifdへと中継、gradle | nnotifを実行させる
+id:ToNNOTIFD type:1 destination:NNOTIFD_IDENTITY option:outputKey:NN_DEFAULT_ROUTE
+    
+//gradle | nnotif の受け側
+id:FromGradleNnotif type:1 destination:GRADLENOTIFY_IDENTITY
+    
+//connect FromSTWSからToNNOTIFDへ入力、nnotifdへとout, nnotifdからgradle | nnotif起動、 FromGradleNnotifがそれを受け、FromSTWSへとout
+connect:FromSTWS to:ToNNOTIFD
+connect:FromGradleNnotif to:FromSTWS
+
+//FromGradleNnotifからFromSTWSへと通過時に通るフィルタ
+trans:FromGradleNnotif to:FromSTWS prefix:ss@filtering:{"name":"scala","source":" postfix:"}
+
+
+
+//別途、フィルタ入力用のNotif受け入れ線を作る
+id:InputFilterToSTWS type:1 destination:FILTER_INPUT_IDENTITY
+
+//FromSTWSへと接続
+connect:InputFilterToSTWS to:FromSTWS
+
+//これでOK、あとは、フィルタをmessageにして、まんまぶち込めばSTへと届く筈
