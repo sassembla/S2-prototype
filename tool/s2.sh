@@ -1,1 +1,2 @@
-/Users/sassembla/Desktop/S2/tool/nnotif -t NNOTIFD_IDENTITY -i "nn@ -e nn:[\"/usr/local/bin/gradle\", \"-b\", \"/Users/sassembla/Desktop/HelloWorld/build.gradle\", \"build\", \"-i\", \"|\", \"/Users/sassembla/Desktop/S2/tool/nnotif\", \"-t\", \"GRADLENOTIFY_IDENTITY\", \"-o\", \"/Users/sassembla/Desktop/gradled.log\"]" -k NN_DEFAULT_ROUTE
+open /Users/sassembla/Desktop/S2/tool/setting.sr
+./nnotifd -c start -i NNOTIFD_IDENTITY

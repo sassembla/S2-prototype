@@ -16,12 +16,12 @@ connect:FromGradleNnotif to:FromSTWS
 //FromGradleNnotifからFromSTWSへと通過時に通るフィルタ
 trans:FromGradleNnotif to:FromSTWS prefix:ss@filtering:{"name":"scala","source":" postfix:"}
 
-
-
 //別途、フィルタ入力用のNotif受け入れ線を作る
 id:InputFilterToSTWS type:1 destination:FILTER_INPUT_IDENTITY
 
 //FromSTWSへと接続
 connect:InputFilterToSTWS to:FromSTWS
 
+
 //これでOK、あとは、フィルタをmessageにして、まんまぶち込めばSTへと届く筈
+emit:ss@showAtLog:{"message":"S2-ready"}->showStatusMessage:{"message":"S2-ready"} to:FromSTWS
