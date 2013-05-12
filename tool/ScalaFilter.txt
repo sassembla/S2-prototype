@@ -1,10 +1,6 @@
 ss@inputIdentity:
 {
-    "id": "SublimeSocketChromeScalaClient"
-}
-->checkAPICompatibility:
-{
-    "version": "0.8.7"
+    "id": "S2Client"
 }
 ->defineFilter: 
 {
@@ -35,17 +31,11 @@ ss@inputIdentity:
             }
         },
         {
-            "^start": {
+            "^BUILD SUCCESSFUL": {
                 "selectors": [
                     {
                         "eraseAllRegion": {}
-                    }
-                ]
-            }
-        },
-        {
-            "^BUILD SUCCESSFUL": {
-                "selectors": [
+                    },
                     {
                         "showStatusMessage": {
                             "message": "scala compile succeeded."
@@ -54,20 +44,6 @@ ss@inputIdentity:
                     {
                         "showAtLog": {
                             "message": "scala compile succeeded."
-                        }
-                    },
-                    {
-                        "monocastMessage": {
-                            "target": "SublimeSocketChromeScalaClient",
-                            "message": "end",
-                            "sender": "scalacompilefinished"
-                        }
-                    },
-                    {
-                        "monocastMessage": {
-                            "target": "SublimeSocketChromeScalaClient",
-                            "message": "/Users/sassembla/Desktop/HelloWorld/src/main/scala/HelloWorld.scala",
-                            "sender": "scalasaved"
                         }
                     }
                 ]
@@ -84,13 +60,6 @@ ss@inputIdentity:
                     {
                         "showAtLog": {
                             "message": "scala compile failure."
-                        }
-                    },
-                    {
-                        "monocastMessage": {
-                            "target": "SublimeSocketChromeScalaClient",
-                            "message": "end",
-                            "sender": "scalacompilefinished"
                         }
                     }
                 ]
@@ -152,17 +121,13 @@ ss@inputIdentity:
 ->setReactor: 
 {
     "target": "scala",
-    "event": "on_post_save",
+    "event": "on_modified",
     "interval": 100,
-    "replacefromto": {
-        "path": "message"
-    },
     "selectors": [
         {
             "monocastMessage": {
-                "target": "SublimeSocketChromeScalaClient",
-                "message": "replace_stuff",
-                "sender": "scalasaved"
+                "target": "S2Client",
+                "message": "nn@ -e nn:[\"/bin/sh\",\"/Users/sassembla/Desktop/S2/tool/ignite.sh\"]"
             }
         }
     ]
