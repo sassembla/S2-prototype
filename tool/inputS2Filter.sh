@@ -1,1 +1,0 @@
-./nnotif -t FILTER_INPUT_IDENTITY -f ./ScalaFilter.txt -o ./nnotif.log --ignoretabs 4 --dontsplitbyline
