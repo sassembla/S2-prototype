@@ -3,6 +3,9 @@
 //STからのWS経由In / Out
 id:FromSTWS type:0 destination:ws://127.0.0.1:8823
 
+//上記とのコンパチ、テスト経路、起動路
+//id:FromSTWS type:1 destination:TEST_INPUT
+
 //STからのOutを受けてnnotifdへと中継、gradle | nnotifを実行させる
 id:ToNNOTIFD type:1 destination:NNOTIFD_IDENTITY option:outputKey:NN_DEFAULT_ROUTE
     

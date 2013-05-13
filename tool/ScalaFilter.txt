@@ -122,7 +122,7 @@ ss@inputIdentity:
 {
     "target": "scala",
     "event": "on_modified",
-    "interval": 100,
+    "interval": 1000,
     "selectors": [
         {
             "monocastMessage": {
