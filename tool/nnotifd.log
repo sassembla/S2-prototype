@@ -1,18 +1,2 @@
 nnotifd launched
 nnotifd start serving
-nnotifd input received
-nnotifd executes was launched:/bin/sh /Users/sassembla/Desktop/S2/tool/ignite.sh
-nnotifd input received
-nnotifd executes was launched:/usr/local/bin/gradle -b /Users/sassembla/Desktop/HelloWorld/build.gradle build -i | /Users/sassembla/Desktop/S2/tool/nnotif -t GRADLENOTIFY_IDENTITY --ignorebl
-nnotifd input received
-nnotifd executes was launched:/bin/sh /Users/sassembla/Desktop/S2/tool/ignite.sh
-nnotifd input received
-nnotifd executes was launched:/usr/local/bin/gradle -b /Users/sassembla/Desktop/HelloWorld/build.gradle build -i | /Users/sassembla/Desktop/S2/tool/nnotif -t GRADLENOTIFY_IDENTITY --ignorebl
-nnotifd input received
-nnotifd executes was launched:/bin/sh /Users/sassembla/Desktop/S2/tool/ignite.sh
-nnotifd input received
-nnotifd executes was launched:/usr/local/bin/gradle -b /Users/sassembla/Desktop/HelloWorld/build.gradle build -i | /Users/sassembla/Desktop/S2/tool/nnotif -t GRADLENOTIFY_IDENTITY --ignorebl
-nnotifd input received
-nnotifd executes was launched:/bin/sh /Users/sassembla/Desktop/S2/tool/ignite.sh
-nnotifd input received
-nnotifd executes was launched:/usr/local/bin/gradle -b /Users/sassembla/Desktop/HelloWorld/build.gradle build -i | /Users/sassembla/Desktop/S2/tool/nnotif -t GRADLENOTIFY_IDENTITY --ignorebl

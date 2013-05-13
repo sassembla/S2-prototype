@@ -1,0 +1,13 @@
+//デバッグ、速度計測用のシェル。配線のセットアップを行う。　
+//本番の、NNotifDへの送付と、Gradleからの受け取り部分のみを独立させる。
+
+
+//STからのOutを受けてnnotifdへと中継、gradle | nnotifを実行させる
+id:ToNNOTIFD type:1 destination:NNOTIFD_IDENTITY option:outputKey:NN_DEFAULT_ROUTE
+    
+//gradle | nnotif の受け側
+id:FromGradleNnotif type:1 destination:GRADLENOTIFY_IDENTITY
+    
+//繋がない。
+
+emit:nn@ -e nn:[\"/bin/sh\",\"/Users/sassembla/Desktop/S2/tool/ignite.sh\"] to:ToNNOTIFD
