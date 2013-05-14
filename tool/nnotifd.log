@@ -1,2 +1,20 @@
 nnotifd launched
 nnotifd start serving
+nnotifd received:{
+    "NN_DEFAULT_ROUTE" = "nn@ -e nn:[\"/usr/local/bin/gradle\", \"-b\", \"/Users/sassembla/Desktop/HelloWorld/build.gradle\", \"build\", \"-i\", \"|\", \"/Users/sassembla/Desktop/S2/tool/nnotif\", \"-t\", \"GRADLENOTIFY_IDENTITY\", \"--ignorebl\"]";
+    messageCount = 1;
+}
+nnotifd input received
+nnotifd executes was launched:/usr/local/bin/gradle -b /Users/sassembla/Desktop/HelloWorld/build.gradle build -i | /Users/sassembla/Desktop/S2/tool/nnotif -t GRADLENOTIFY_IDENTITY --ignorebl
+nnotifd received:{
+    "NN_DEFAULT_ROUTE" = "nn@ -e nn:[\"/usr/local/bin/gradle\", \"-b\", \"/Users/sassembla/Desktop/HelloWorld/build.gradle\", \"build\", \"-i\", \"|\", \"/Users/sassembla/Desktop/S2/tool/nnotif\", \"-t\", \"GRADLENOTIFY_IDENTITY\", \"--ignorebl\"]";
+    messageCount = 1;
+}
+nnotifd input received
+nnotifd executes was launched:/usr/local/bin/gradle -b /Users/sassembla/Desktop/HelloWorld/build.gradle build -i | /Users/sassembla/Desktop/S2/tool/nnotif -t GRADLENOTIFY_IDENTITY --ignorebl
+nnotifd received:{
+    "NN_DEFAULT_ROUTE" = "nn@ -e nn:[\"/usr/local/bin/gradle\", \"-b\", \"/Users/sassembla/Desktop/HelloWorld/build.gradle\", \"build\", \"-i\", \"|\", \"/Users/sassembla/Desktop/S2/tool/nnotif\", \"-t\", \"GRADLENOTIFY_IDENTITY\", \"--ignorebl\"]";
+    messageCount = 1;
+}
+nnotifd input received
+nnotifd executes was launched:/usr/local/bin/gradle -b /Users/sassembla/Desktop/HelloWorld/build.gradle build -i | /Users/sassembla/Desktop/S2/tool/nnotif -t GRADLENOTIFY_IDENTITY --ignorebl

@@ -10,4 +10,4 @@ id:FromGradleNnotif type:1 destination:GRADLENOTIFY_IDENTITY
     
 //繋がない。
 
-emit:nn@ -e nn:[\"/bin/sh\",\"/Users/sassembla/Desktop/S2/tool/ignite.sh\"] to:ToNNOTIFD
+emitfile:/Users/sassembla/Desktop/S2/tool/emit.txt to:ToNNOTIFD
