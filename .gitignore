@@ -4,3 +4,7 @@
 tool/  .log
 
 tool/nnotif.log
+
+tool/nnotifd.log
+
+tool/time.log
