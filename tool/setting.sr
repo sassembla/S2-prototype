@@ -1,7 +1,7 @@
 //SocketRoundaboutの設定ファイル。SocketRoundabout -s このファイル　で通るはず。
 
 //STからのWS経由In / Out
-id:FromSTWS type:0 destination:ws://127.0.0.1:8823
+id:FromSTWS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
 
 //上記とのコンパチ、テスト経路、起動路
 //id:FromSTWS type:1 destination:TEST_INPUT

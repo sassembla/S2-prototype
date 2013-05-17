@@ -132,6 +132,20 @@ ss@inputIdentity:
         }
     ]
 }
+->setReactor: 
+{
+    "target": "scala",
+    "event": "on_post_save",
+    "interval": 100,
+    "selectors": [
+        {
+            "monocastMessage": {
+                "target": "S2Client",
+                "message": "nn@ -e nn:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
+            }
+        }
+    ]
+}
 ->showAtLog:
 {
     "message": "scala-compilation sequence ready!"
