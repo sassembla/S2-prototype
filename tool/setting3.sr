@@ -1,0 +1,8 @@
+//SRで、WebSocketのserveを行う。
+id:WebSocketServer type:0 destination:ws://127.0.0.1:8824
+
+//serveしたものを、STへと送り込むWebSocketClient
+id:FromWSToST type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
+    
+//接続
+connect:WebSocketServer to:FromWSToST
