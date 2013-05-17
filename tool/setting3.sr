@@ -6,3 +6,6 @@ id:FromWSToST type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
     
 //接続
 connect:WebSocketServer to:FromWSToST
+
+//一応通知
+emit:setting3_over to:FromWSToST
