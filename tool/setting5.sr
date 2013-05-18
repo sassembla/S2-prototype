@@ -23,8 +23,8 @@ connect:FromUser to:ToNNOTIFD
 connect:FromGradleNnotif to:FromUser
 
 
-//FromGradleNnotifからFromSTWSへと通過時に通るフィルタ
-trans:FromGradleNnotif to:FromSTWS prefix:ss@filtering:{"name":"scala","source":" postfix:"}
+//FromGradleNnotifからFromUserへと通過時に通るフィルタ
+trans:FromGradleNnotif to:FromUser prefix:ss@filtering:{"name":"scala","source":" postfix:"}
 
 
 //別途、フィルタ入力用のNotif受け入れ線を作る
