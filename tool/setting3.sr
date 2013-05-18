@@ -1,4 +1,4 @@
-//SRで、WebSocketのserveを行う。
+//SRで、WebSocketのserveを行う場合の設定。
 id:WebSocketServer type:0 destination:ws://127.0.0.1:8824
 
 //serveしたものを、STへと送り込むWebSocketClient

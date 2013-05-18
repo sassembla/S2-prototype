@@ -1,3 +1,4 @@
+//S2のクライアント側の設定。
 //ST->SSからのメッセージを、SRで受けるためのClient
 id:WSToSTSS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
 
