@@ -13,5 +13,9 @@ emit:SR->S2-connected. to:WSToSTSS
 connect:WSToSTSS to:SRToS2
 connect:SRToS2 to:WSToSTSS
 
+//フィルタの読み込み
+emitfile:/Users/mondogrosso/Desktop/S2/tool/ScalaFilter.txt to:WSToSTSS
+
 //通知
-emit:setting4_over to:WSToSTSS
+emit:ss@showAtLog:{"message":"S2-ready"}->showStatusMessage:{"message":"S2-ready"} to:WSToSTSS
+

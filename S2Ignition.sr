@@ -34,7 +34,3 @@ id:InputFilterToUser type:1 destination:FILTER_INPUT_IDENTITY
 
 //FromSTWSへと接続
 connect:InputFilterToUser to:FromUser
-
-
-//これでOK、あとは、フィルタをmessageにして、まんまぶち込めばFromUserへと届く筈
-emit:ss@showAtLog:{"message":"S2-ready"}->showStatusMessage:{"message":"S2-ready"} to:FromUser
