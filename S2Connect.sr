@@ -1,0 +1,17 @@
+//S2のクライアント側の設定。
+//ST->SSからのメッセージを、SRで受けるためのClient
+id:WSToSTSS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
+
+emit:ST->SR-connected. to:WSToSTSS
+
+//serveしたものを、S2へと送付するconnection
+id:SRToS2 type:0 destination:ws://36.244.186.217:80 option:websocketas:client
+
+emit:SR->S2-connected. to:WSToSTSS
+    
+//接続 ST<->S2
+connect:WSToSTSS to:SRToS2
+connect:SRToS2 to:WSToSTSS
+
+//通知
+emit:setting4_over to:WSToSTSS
