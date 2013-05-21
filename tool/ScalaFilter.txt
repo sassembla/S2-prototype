@@ -1,3 +1,6 @@
+//Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。
+//buffer転送の仕組みの組み込みがまだ。
+
 ss@inputIdentity:
 {
     "id": "S2Client"
