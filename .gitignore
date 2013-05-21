@@ -10,3 +10,6 @@ tool/nnotifd.log
 tool/time.log
 
 tool/nnotif1.log
+
+tool/project/*
+tool/target/*
