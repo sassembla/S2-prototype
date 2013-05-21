@@ -21,3 +21,10 @@ tool/build/*
 S2target/.gradle/*
 
 S2target/build/*
+S2/S2.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+
+S2/S2.xcodeproj/project.xcworkspace/xcuserdata/sassembla.xcuserdatad/UserInterfaceState.xcuserstate
+
+S2/S2.xcodeproj/xcuserdata/sassembla.xcuserdatad/xcschemes/xcschememanagement.plist
+
+S2/S2.xcodeproj/xcuserdata/sassembla.xcuserdatad/xcschemes/S2.xcscheme
