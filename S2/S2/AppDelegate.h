@@ -62,7 +62,11 @@ typedef enum {
 #define S2_HEADER   (@"S2@")
 #define S2_JSON_PARTITION   (@"S2:")
 #define S2_SPACE    (@" ")
-#define S2_DEFAULT_ROUTE    (@"S2_DEFAULT_ROUTE")
+
+//routing
+#define S2_CONNECT      (@"S2_CONNECT")
+#define S2_UPDATE       (@"S2_UPDATE")
+#define S2_COMPILE      (@"S2_COMPILE")
 
 #define DEFINE_PIPE (@"|")
 

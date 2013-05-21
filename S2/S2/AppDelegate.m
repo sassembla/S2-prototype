@@ -114,8 +114,9 @@
     
     [self writeLogLine:[NSString stringWithFormat:@"%@%@", MESSAGE_RECEIVED, dict]];
     
-    if (dict[S2_DEFAULT_ROUTE]) {
-        NSString * execs = [[NSString alloc]initWithString:dict[S2_DEFAULT_ROUTE]];
+    //コンパイルを行う
+    if (dict[S2_COMPILE]) {
+        NSString * execs = [[NSString alloc]initWithString:dict[S2_COMPILE]];
         if ([execs hasPrefix:S2_HEADER]) {
             //まずはJSONとそれ以外に分離する
             NSArray * execAndJSONArray = [[NSArray alloc]initWithArray:[execs componentsSeparatedByString:S2_JSON_PARTITION]];
@@ -132,6 +133,18 @@
                 }
             }
         }
+    }
+    
+    //接続時
+    if (dict[S2_CONNECT]) {
+        //ファイルリストを受け取り、ロードを開始する
+        NSLog(@"");
+        
+    }
+    
+    //ファイル送付
+    if (dict[S2_UPDATE]) {
+        
     }
 }
 

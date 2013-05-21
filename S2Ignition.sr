@@ -7,7 +7,7 @@
 id:FromUser type:0 destination:ws://127.0.0.1:8824
 
 //STからのOutを受けてnnotifdへと中継、gradle | nnotifを実行させる
-id:ToNNOTIFD type:1 destination:NNOTIFD_IDENTITY option:outputKey:NN_DEFAULT_ROUTE
+id:ToNNOTIFD type:1 destination:S2_IDENTITY option:outputKey:S2_COMPILE
 
 
 //このへんでS2が動く
@@ -27,10 +27,3 @@ connect:FromGradleNnotif to:FromUser
 
 //FromGradleNnotifからFromUserへと通過時に通るフィルタ
 trans:FromGradleNnotif to:FromUser prefix:ss@filtering:{"name":"scala","source":" postfix:"}
-
-
-//別途、フィルタ入力用のNotif受け入れ線を作る
-id:InputFilterToUser type:1 destination:FILTER_INPUT_IDENTITY
-
-//FromSTWSへと接続
-connect:InputFilterToUser to:FromUser
