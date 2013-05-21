@@ -1,0 +1,13 @@
+//デバッグ、速度計測用の設定。 sbt
+//本番の、NNotifDへの送付と、Gradleからの受け取り部分のみを独立させる。
+
+
+//STからのOutを受けてnnotifdへと中継、gradle | nnotifを実行させる
+id:ToNNOTIFD type:1 destination:NNOTIFD_IDENTITY option:outputKey:NN_DEFAULT_ROUTE
+    
+//gradle | nnotif の受け側
+id:FromGradleNnotif type:1 destination:GRADLENOTIFY_IDENTITY
+    
+//繋がない。
+
+emitfile:/Users/mondogrosso/Desktop/S2/tool/emit2.txt to:ToNNOTIFD
