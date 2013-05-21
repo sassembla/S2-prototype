@@ -13,3 +13,7 @@ tool/nnotif1.log
 
 tool/project/*
 tool/target/*
+
+tool/.gradle/*
+
+tool/build/*
