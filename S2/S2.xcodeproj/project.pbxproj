@@ -16,6 +16,8 @@
 		135B185B174B9B8A00B13CA6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 135B183B174B9B8900B13CA6 /* Cocoa.framework */; };
 		135B1863174B9B8A00B13CA6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 135B1861174B9B8A00B13CA6 /* InfoPlist.strings */; };
 		135B1866174B9B8A00B13CA6 /* S2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B1865174B9B8A00B13CA6 /* S2Tests.m */; };
+		135B1871174BA18400B13CA6 /* S2.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B1870174BA18400B13CA6 /* S2.m */; };
+		135B1872174BA18400B13CA6 /* S2.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B1870174BA18400B13CA6 /* S2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		135B1860174B9B8A00B13CA6 /* S2Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "S2Tests-Info.plist"; sourceTree = "<group>"; };
 		135B1862174B9B8A00B13CA6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		135B1865174B9B8A00B13CA6 /* S2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = S2Tests.m; sourceTree = "<group>"; };
+		135B186F174BA18400B13CA6 /* S2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = S2.h; sourceTree = "<group>"; };
+		135B1870174BA18400B13CA6 /* S2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = S2.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,8 @@
 				135B1847174B9B8A00B13CA6 /* main.m */,
 				135B1849174B9B8A00B13CA6 /* S2-Prefix.pch */,
 				135B184A174B9B8A00B13CA6 /* Credits.rtf */,
+				135B186F174BA18400B13CA6 /* S2.h */,
+				135B1870174BA18400B13CA6 /* S2.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 			files = (
 				135B1848174B9B8A00B13CA6 /* main.m in Sources */,
 				135B184F174B9B8A00B13CA6 /* AppDelegate.m in Sources */,
+				135B1871174BA18400B13CA6 /* S2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				135B1866174B9B8A00B13CA6 /* S2Tests.m in Sources */,
+				135B1872174BA18400B13CA6 /* S2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

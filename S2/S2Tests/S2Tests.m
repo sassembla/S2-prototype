@@ -6,7 +6,13 @@
 //  Copyright (c) 2013年 KISSAKI Inc,. All rights reserved.
 //
 
+/**
+ Jenkinsからの実行を維持したいので、nnotifdの代替になるイメージ。
+ nnotifdの特化版。
+ */
 #import <SenTestingKit/SenTestingKit.h>
+
+
 
 @interface S2Tests : SenTestCase
 
@@ -30,6 +36,7 @@
 
 - (void)testExample
 {
+    
     STFail(@"Unit tests are not implemented yet in S2Tests");
 }
 
