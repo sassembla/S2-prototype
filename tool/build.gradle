@@ -1,0 +1,67 @@
+apply plugin:"scala"
+apply plugin:"maven"
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.6'
+}
+
+def encoding = 'UTF-8'
+
+[compileScala, compileTestScala].each{
+	it.options.encoding = encoding
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	scalaTools  (
+		[group: "org.scala-lang", name: "scala-compiler",version: "2.10.1"],
+		[group: "org.scala-lang", name: "scala-library",version: "2.10.1"]
+	)
+	
+	compile (
+		[group: "org.scala-lang", name: "scala-library",version: "2.10.1"]
+	)
+}
+
+
+
+
+// compileScala {
+// 	scalaCompileOptions.useCompileDaemon = false
+// }
+
+// tasks.withType(ScalaCompile) {
+//     scalaCompileOptions.useAnt = false,
+// }
+// tasks.withType(ScalaCompile) {    
+//     configure(scalaCompileOptions.forkOptions) {
+//         memoryMaximumSize = '1g'
+//         jvmArgs = ['-XX:MaxPermSize=512m']
+//     }
+// }
+
+// jar {
+// 	manifest {
+// 		attributes 'Main-class': "com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders"
+// 	}
+	
+// 	from {
+// 		configurations.runtime.collect {
+// 			if (it.isDirectory()){
+// 			} else {
+// 				it
+// 				zipTree(it)
+// 			}
+// 		}
+// 	}
+	
+// 	from {
+// 		fileTree(dir: 'resources', includes: ['*.*'])
+// 	}
+	
+// 	//exclude('scala/**') 
+// }
+
