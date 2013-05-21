@@ -17,3 +17,7 @@ tool/target/*
 tool/.gradle/*
 
 tool/build/*
+
+S2target/.gradle/*
+
+S2target/build/*
