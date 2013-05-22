@@ -34,4 +34,4 @@ id:FromS2_fileRequest type:1 destination:FROMS2_IDENTITY
 connect:FromS2_fileRequest to:FromUser 
 
 //FromS2_fileRequestからFromUserへと通過時に通るフィルタ
-trans:FromS2_fileRequest to:FromUser prefix:s@runWithBuffer:{"view":" postfix:"}
+trans:FromS2_fileRequest to:FromUser prefix:ss@readFileData:{"view":" postfix:"}->(data|message)monocastMessage:{"target":"S2Client","message":"replace"}
