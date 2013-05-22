@@ -30,10 +30,10 @@
             m_bootFromApp = true;
         }
         
-        if (dict[KEY_IDENTITY]) {
-            m_settingDict = [[NSMutableDictionary alloc]initWithDictionary:@{KEY_IDENTITY:dict[KEY_IDENTITY]}];
+        if (true) {
+            m_settingDict = [[NSMutableDictionary alloc]initWithDictionary:@{KEY_IDENTITY:S2_IDENTITY}];
             
-            [[NSDistributedNotificationCenter defaultCenter]addObserver:self selector:@selector(receiver:) name:dict[KEY_IDENTITY] object:nil];
+            [[NSDistributedNotificationCenter defaultCenter]addObserver:self selector:@selector(receiver:) name:S2_IDENTITY object:nil];
             
             if (dict[KEY_OUTPUT]) {
                 [self setOutput:dict[KEY_OUTPUT]];
@@ -51,8 +51,8 @@
             
             int initializedStatus = STATUS_STOPPED;
             
-            if (dict[KEY_CONTROL]) {
-                initializedStatus = [self setServe:dict[KEY_CONTROL]];
+            if (true) {
+                initializedStatus = [self setServe:CODE_START];
             }
             
             [m_settingDict setValue:[[NSNumber alloc]initWithInt:initializedStatus] forKey:KEY_CONTROL];
