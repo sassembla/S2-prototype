@@ -117,7 +117,7 @@
     
     //コマンドライン動作を行う
     if (dict[S2_MANIPULATE]) {
-        NSString * execs = [[NSString alloc]initWithString:dict[S2_COMPILE]];
+        NSString * execs = [[NSString alloc]initWithString:dict[S2_MANIPULATE]];
         if ([execs hasPrefix:S2_HEADER]) {
             //まずはJSONとそれ以外に分離する
             NSArray * execAndJSONArray = [[NSArray alloc]initWithArray:[execs componentsSeparatedByString:S2_JSON_PARTITION]];
