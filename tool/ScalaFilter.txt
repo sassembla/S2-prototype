@@ -146,10 +146,15 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
         }
     ]
 }
-->最終段階、始動シグナルを送ることができる/monocastMessage:
+->リストと一緒に起動シグナルを送りつける/getAllFilePath:
+{
+    "anchor": "build.gradle",
+    "header": "S2@ -ignite "
+}
+->(paths|message)monocastMessage:
 {
     "target": "S2Client",
-    "message": "S2@ -ignite"
+    "message": "replace"
 }
 ->showAtLog:
 {

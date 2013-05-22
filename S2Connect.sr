@@ -4,6 +4,9 @@ id:WSToSTSS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
 
 emit:ST->SR-connected. to:WSToSTSS
 
+//現在のSTで展開中のファイルを基準点にセット(ST2の場合非同期、、、アキレス腱になりうる)
+emit:ss@setWindowBasePath:{} to:WSToSTSS
+
 //serveしたものを、S2へと送付するconnection
 id:SRToS2 type:0 destination:ws://36.244.186.217:80 option:websocketas:client
 

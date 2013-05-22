@@ -18,6 +18,10 @@
     bool m_bootFromApp;
     NSMutableArray * m_bufferedOutput;
     NSMutableArray * m_runningTasks;
+    
+    
+    //s2 specific
+    NSMutableDictionary * m_codeDict;
 }
 
 
@@ -57,6 +61,8 @@
             
             [m_settingDict setValue:[[NSNumber alloc]initWithInt:initializedStatus] forKey:KEY_CONTROL];
         }
+        
+        m_codeDict = [[NSMutableDictionary alloc]init];
     }
     return self;
 }
@@ -232,23 +238,9 @@
     if (argsDict[KEY_IGNITE]) {
         //ここで、リストの受け取り、そのリストの内容をすべてgetするためのリクエストを出す
         //完了したらreadyマークを出す
-        NSArray * currentParams = @[@"--daemon", @"-b", @"/Users/mondogrosso/Desktop/HelloWorld/build.gradle", @"build", @"-i"];
-        NSTask * compileTask = [[NSTask alloc]init];
-        [compileTask setLaunchPath:@"/usr/local/bin/gradle"];
-        [compileTask setArguments:currentParams];
+        NSLog(@"");
+        //get list
         
-        NSPipe * currentOut = [[NSPipe alloc]init];
-        
-        [compileTask setStandardOutput:currentOut];
-        
-        NSTask * nnotifTask = [[NSTask alloc]init];
-        [nnotifTask setLaunchPath:@"/Users/mondogrosso/Desktop/S2/tool/nnotif"];
-        [nnotifTask setArguments:@[@"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"]];
-        
-        [nnotifTask setStandardInput:currentOut];
-        
-        [compileTask launch];
-        [nnotifTask launch];
     }
     
     if (argsDict[KEY_UPDATE]) {
@@ -258,14 +250,30 @@
     if (argsDict[KEY_COMPILE]) {
         //リストの受け取り、リストに無い項目の削除、ファイル化、コンパイルを行う
         
-        NSArray * currentParams = @[@"--daemon", @"-b", @"/Users/mondogrosso/Desktop/HelloWorld/build.gradle", @"build", @"-i", @"|", @"/Users/mondogrosso/Desktop/S2/tool/nnotif", @"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"];
-        
-        NSTask * compileTask = [[NSTask alloc]init];
-        [compileTask setLaunchPath:@"/usr/local/bin/gradle"];
-        [compileTask setArguments:currentParams];
-        [compileTask launch];
+        [self compile];
     }
     
+}
+
+
+- (void) compile {
+    NSArray * currentParams = @[@"--daemon", @"-b", @"/Users/mondogrosso/Desktop/HelloWorld/build.gradle", @"build", @"-i"];
+    NSTask * compileTask = [[NSTask alloc]init];
+    [compileTask setLaunchPath:@"/usr/local/bin/gradle"];
+    [compileTask setArguments:currentParams];
+    
+    NSPipe * currentOut = [[NSPipe alloc]init];
+    
+    [compileTask setStandardOutput:currentOut];
+    
+    NSTask * nnotifTask = [[NSTask alloc]init];
+    [nnotifTask setLaunchPath:@"/Users/mondogrosso/Desktop/S2/tool/nnotif"];
+    [nnotifTask setArguments:@[@"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"]];
+    
+    [nnotifTask setStandardInput:currentOut];
+    
+    [compileTask launch];
+    [nnotifTask launch];
 }
 
 
