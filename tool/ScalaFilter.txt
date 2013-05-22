@@ -1,7 +1,4 @@
-//Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。
-//buffer転送の仕組みの組み込みがまだ。
-
-ss@inputIdentity:
+ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。/inputIdentity:
 {
     "id": "S2Client"
 }
@@ -130,7 +127,7 @@ ss@inputIdentity:
         {
             "monocastMessage": {
                 "target": "S2Client",
-                "message": "nn@ -e nn:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
+                "message": "S2@ -e S2:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
             }
         }
     ]
@@ -144,10 +141,15 @@ ss@inputIdentity:
         {
             "monocastMessage": {
                 "target": "S2Client",
-                "message": "nn@ -e nn:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
+                "message": "S2@ -e S2:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
             }
         }
     ]
+}
+->シグナルを送る/monocastMessage:
+{
+    "target": "S2Client",
+    "message": "S2@ -e S2:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
 }
 ->showAtLog:
 {
