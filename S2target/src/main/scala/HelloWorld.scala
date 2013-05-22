@@ -4,6 +4,5 @@ object HelloWorld {
 
 	println("hereComes")
 	val sda = 100
-
-	val a = ""
+	val a = "a"
 }
