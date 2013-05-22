@@ -7,7 +7,7 @@
 id:FromUser type:0 destination:ws://127.0.0.1:8824
 
 //STからのOutを受けてnnotifdへと中継、gradle | nnotifを実行させる
-id:ToNNOTIFD type:1 destination:S2_IDENTITY option:outputKey:S2_COMPILE
+id:ToNNOTIFD type:1 destination:S2_IDENTITY option:outputKey:S2_MANIPULATE
 
 
 //このへんでS2が動く
