@@ -230,15 +230,29 @@
     }
     
     if (argsDict[KEY_IGNITE]) {
+        //ここで、リストの受け取り、そのリストの内容をすべてgetするためのリクエストを出す
+        //完了したらreadyマークを出す
+        NSArray * currentParams = @[@"--daemon", @"-b", @"/Users/mondogrosso/Desktop/HelloWorld/build.gradle", @"build", @"-i", @"|", @"/Users/mondogrosso/Desktop/S2/tool/nnotif", @"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"];
         
+        NSTask * compileTask = [[NSTask alloc]init];
+        [compileTask setLaunchPath:@"/usr/local/bin/gradle"];
+        [compileTask setArguments:currentParams];
+        [compileTask launch];
     }
     
     if (argsDict[KEY_UPDATE]) {
-        
+        //仮装ファイルの内容を上書きする、リストにindexが無ければ足す
     }
     
     if (argsDict[KEY_COMPILE]) {
+        //リストの受け取り、リストに無い項目の削除、ファイル化、コンパイルを行う
         
+        NSArray * currentParams = @[@"--daemon", @"-b", @"/Users/mondogrosso/Desktop/HelloWorld/build.gradle", @"build", @"-i", @"|", @"/Users/mondogrosso/Desktop/S2/tool/nnotif", @"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"];
+        
+        NSTask * compileTask = [[NSTask alloc]init];
+        [compileTask setLaunchPath:@"/usr/local/bin/gradle"];
+        [compileTask setArguments:currentParams];
+        [compileTask launch];
     }
     
 }
@@ -255,7 +269,7 @@
 - (void) executeJson:(NSString * )jsonStr {
     NSData * jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
     
-    //JsonからArray、辞書は受け付けない。pipeを使うのを念頭においているので、ただ連結して実行するだけの形式がベスト。NSTaskか、、
+    //JsonからArray、辞書は受け付けない。pipeを使うのを念頭においているので、ただ連結して実行するだけの形式がベスト。
     NSError * err;
     NSArray * jsonArray = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&err];
     
