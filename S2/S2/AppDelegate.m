@@ -237,9 +237,16 @@
     
     if (argsDict[KEY_IGNITE]) {
         //ここで、リストの受け取り、そのリストの内容をすべてgetするためのリクエストを出す
+        NSString * pathsListStr = argsDict[KEY_IGNITE];
+        NSArray * pathArray = [pathsListStr componentsSeparatedByString:@","];
+        
+        for (NSString * path in pathArray) {
+            [m_codeDict setValue:@"" forKey:path];
+            [self emitMessage:path];
+        }
+        
+        
         //完了したらreadyマークを出す
-        NSLog(@"");
-        //get list
         
     }
     
@@ -252,7 +259,11 @@
         
         [self compile];
     }
-    
+}
+
+
+- (void) emitMessage:(NSString * )message {
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":message} deliverImmediately:YES];
 }
 
 
