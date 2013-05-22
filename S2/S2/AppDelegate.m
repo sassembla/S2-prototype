@@ -232,12 +232,23 @@
     if (argsDict[KEY_IGNITE]) {
         //ここで、リストの受け取り、そのリストの内容をすべてgetするためのリクエストを出す
         //完了したらreadyマークを出す
-        NSArray * currentParams = @[@"--daemon", @"-b", @"/Users/mondogrosso/Desktop/HelloWorld/build.gradle", @"build", @"-i", @"|", @"/Users/mondogrosso/Desktop/S2/tool/nnotif", @"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"];
-        
+        NSArray * currentParams = @[@"--daemon", @"-b", @"/Users/mondogrosso/Desktop/HelloWorld/build.gradle", @"build", @"-i"];
         NSTask * compileTask = [[NSTask alloc]init];
         [compileTask setLaunchPath:@"/usr/local/bin/gradle"];
         [compileTask setArguments:currentParams];
+        
+        NSPipe * currentOut = [[NSPipe alloc]init];
+        
+        [compileTask setStandardOutput:currentOut];
+        
+        NSTask * nnotifTask = [[NSTask alloc]init];
+        [nnotifTask setLaunchPath:@"/Users/mondogrosso/Desktop/S2/tool/nnotif"];
+        [nnotifTask setArguments:@[@"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"]];
+        
+        [nnotifTask setStandardInput:currentOut];
+        
         [compileTask launch];
+        [nnotifTask launch];
     }
     
     if (argsDict[KEY_UPDATE]) {
