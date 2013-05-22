@@ -149,7 +149,7 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
 ->最終段階、始動シグナルを送ることができる/monocastMessage:
 {
     "target": "S2Client",
-    "message": "S2@ -e S2:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
+    "message": "S2@ -ignite"
 }
 ->showAtLog:
 {

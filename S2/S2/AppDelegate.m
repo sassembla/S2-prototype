@@ -114,7 +114,6 @@
     
     [self writeLogLine:[NSString stringWithFormat:@"%@%@", MESSAGE_RECEIVED, dict]];
     
-    
     //コマンドライン動作を行う
     if (dict[S2_MANIPULATE]) {
         NSString * execs = [[NSString alloc]initWithString:dict[S2_MANIPULATE]];
@@ -135,55 +134,9 @@
             }
         }
     }
-    
-    
-    //コンパイルを行う
-    if (dict[S2_COMPILE]) {
-        /*
-         "/usr/local/bin/gradle", 
-         "--daemon",
-         "-b",
-         "/Users/mondogrosso/Desktop/HelloWorld/build.gradle",
-         "build",
-         "-i",
-         "|",
-         "/Users/mondogrosso/Desktop/S2/tool/nnotif",
-         "-t",
-         "GRADLENOTIFY_IDENTITY",
-         "--ignorebl"
-         */
-        NSString * execs = [[NSString alloc]initWithString:dict[S2_COMPILE]];
-        if ([execs hasPrefix:S2_HEADER]) {
-            //まずはJSONとそれ以外に分離する
-            NSArray * execAndJSONArray = [[NSArray alloc]initWithArray:[execs componentsSeparatedByString:S2_JSON_PARTITION]];
-            
-            //残った部分をコマンドラインとして処理する
-            NSArray * execArray = [[NSArray alloc]initWithArray:[execAndJSONArray[0] componentsSeparatedByString:S2_SPACE]];
-            
-            if (1 < [execArray count]) {
-                NSArray * subarray = [execArray subarrayWithRange:NSMakeRange(1, [execArray count]-1)];
-                if (1 < [execAndJSONArray count]) {
-                    [self readInput:subarray withParam:execAndJSONArray[1]];
-                } else {
-                    [self readInput:subarray withParam:nil];
-                }
-            }
-        }
-    }
-    
-    
-    //接続時
-    if (dict[S2_CONNECT]) {
-        //ファイルリストを受け取り、ロードを開始する
-        NSLog(@"");
-        
-    }
-    
-    //ファイル送付
-    if (dict[S2_UPDATE]) {
-        
-    }
 }
+
+
 
 - (void) readInput:(NSArray * )execArray withParam:(NSString * )jsonParam {
     
