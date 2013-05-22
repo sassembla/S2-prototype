@@ -1,1 +1,0 @@
-./nnotifd -c start -i NNOTIFD_IDENTITY　-o ./nnotifd.log
