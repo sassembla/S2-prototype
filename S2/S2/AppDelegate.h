@@ -33,6 +33,11 @@ typedef enum {
 #define KEY_NOTIFID     (@"--nid")
 #define KEY_EXECUTE     (@"-e")
 
+#define KEY_IGNITE      (@"-ignite")
+#define KEY_UPDATE      (@"-update")
+#define KEY_COMPILE     (@"-compile")
+
+
 #define CODE_START  (@"start")
 #define CODE_STOP   (@"stop")
 

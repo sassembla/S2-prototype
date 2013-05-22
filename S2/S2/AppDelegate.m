@@ -229,6 +229,18 @@
         }
     }
     
+    if (argsDict[KEY_IGNITE]) {
+        
+    }
+    
+    if (argsDict[KEY_UPDATE]) {
+        
+    }
+    
+    if (argsDict[KEY_COMPILE]) {
+        
+    }
+    
 }
 
 
