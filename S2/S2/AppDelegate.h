@@ -67,6 +67,8 @@ typedef enum {
 #define S2_CONNECT      (@"S2_CONNECT")
 #define S2_UPDATE       (@"S2_UPDATE")
 #define S2_COMPILE      (@"S2_COMPILE")
+#define S2_MANIPULATE   (@"S2_MANIPULATE")
+
 
 #define DEFINE_PIPE (@"|")
 
