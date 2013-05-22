@@ -8,7 +8,7 @@ emit:ST->SR-connected. to:WSToSTSS
 id:SRToS2 type:0 destination:ws://36.244.186.217:80 option:websocketas:client
 
 emit:SR->S2-connected. to:WSToSTSS
-    
+
 //接続 ST<->S2
 connect:WSToSTSS to:SRToS2
 connect:SRToS2 to:WSToSTSS
@@ -17,5 +17,5 @@ connect:SRToS2 to:WSToSTSS
 emitfile:/Users/mondogrosso/Desktop/S2/tool/ScalaFilter.txt to:WSToSTSS
 
 //通知
-emit:ss@showAtLog:{"message":"S2-ready"}->showStatusMessage:{"message":"S2-ready"} to:WSToSTSS
+emit:ss@showAtLog:{"message":"S2 compiler ready"}->showStatusMessage:{"message":"S2 compiler ready"} to:WSToSTSS
 
