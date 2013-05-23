@@ -1,7 +1,7 @@
 getAllFilePath:
 {
     "anchor": "build.gradle",
-    "header": "S2@ -compile "
+    "header": "-compile "
 }
 ->(paths|message)monocastMessage:
 {
