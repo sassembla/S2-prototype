@@ -117,7 +117,7 @@
 
 - (void) receiver:(NSNotification * )notif {
     NSDictionary * dict = [notif userInfo];
-    
+    NSLog(@"dict%@", dict);
     [self writeLogLine:[NSString stringWithFormat:@"%@%@", MESSAGE_RECEIVED, dict]];
     
     //コマンドライン動作を行う
