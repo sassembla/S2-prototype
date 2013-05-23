@@ -139,7 +139,26 @@
                 }
             }
         }
+
+        //updateはここで処理する -update:path sourcecode
+        if ([execs hasPrefix:KEY_UPDATE]) {
+            
+            NSArray * head = [[execs componentsSeparatedByString:@" "] subarrayWithRange:NSMakeRange(0,1)];
+
+            NSString * path = [head[0] componentsSeparatedByString:@":"][1];
+//            NSString * headAndSpace = [[NSString alloc]initWithFormat:@"%@%@", head, @" "];
+            
+            //remove header from code
+//            NSRange rangeOfSubstring = [execs rangeOfString:headAndSpace];
+            NSString * source = [execs substringFromIndex:([head[0] length]+1)];
+            NSLog(@"path %@", path);
+            NSLog(@"source %@", source);
+            
+            //update code
+            [m_codeDict setValue:source forKey:path];
+        }
     }
+    
 }
 
 
@@ -174,14 +193,14 @@
     
     
     if (0 < [argsDict count]) {
-        [self update:argsDict withParam:jsonParam];
+        [self execute:argsDict withParam:jsonParam];
     }
 }
 
 /**
  入力を元に、動作を変更する
  */
-- (void) update:(NSDictionary * )argsDict withParam:(NSString * )jsonParam {
+- (void) execute:(NSDictionary * )argsDict withParam:(NSString * )jsonParam {
     if (argsDict[KEY_NOTIFID]) {
         [self writeLogLine:[[NSString alloc]initWithFormat:@"%@%@",MESSAGE_MESSAGEID_RECEIVED, argsDict[KEY_NOTIFID]]];
     }
@@ -248,15 +267,11 @@
             
             if ([targettedSuffixArray containsObject:suffix]) {
                 [m_codeDict setValue:@"" forKey:path];
-                [self emitPullRequestMessage:path];
+                [self emitPullRequestMessage:path withIdentity:path];
             }
         }
     }
-    
-    if (argsDict[KEY_UPDATE]) {
-        //仮装ファイルの内容を上書きする、リストにindexが無ければ足す
-        NSLog(@"");
-    }
+   
     
     if (argsDict[KEY_COMPILE]) {
         //リストの受け取り、リストに無い項目の削除、ファイル化、コンパイルを行う
@@ -266,9 +281,9 @@
 }
 
 
-- (void) emitPullRequestMessage:(NSString * )sourcePath {
+- (void) emitPullRequestMessage:(NSString * )sourcePath withIdentity:(NSString * )identity {
     //SSへのリクエストを組み立てる。
-    NSString * message = [[NSString alloc]initWithFormat:@"%@%@%@%@%@", @"ss@readFileData:{\"path\":\"", sourcePath, @"\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update \",\"sender\":\"", sourcePath, @"\"}"];
+    NSString * message = [[NSString alloc]initWithFormat:@"%@%@%@%@%@", @"ss@readFileData:{\"path\":\"", sourcePath, @"\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update:",identity, @" \"}"];
 
     NSLog(@"request is %@", message);
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":message} deliverImmediately:YES];
