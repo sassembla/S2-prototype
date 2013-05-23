@@ -240,9 +240,16 @@
         NSString * pathsListStr = argsDict[KEY_IGNITE];
         NSArray * pathArray = [pathsListStr componentsSeparatedByString:@","];
         
+        NSArray * targettedSuffixArray = @[@".scala", @".gradle"];
+        
         for (NSString * path in pathArray) {
-            [m_codeDict setValue:@"" forKey:path];
-            [self emitMessage:path];
+            
+            NSString * suffix = [path pathExtension];
+            
+            if ([targettedSuffixArray containsObject:suffix]) {
+                [m_codeDict setValue:@"" forKey:path];
+                [self emitMessage:path];
+            }
         }
         
         

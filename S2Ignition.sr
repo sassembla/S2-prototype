@@ -26,7 +26,6 @@ connect:FromGradleNnotif to:FromUser
 trans:FromGradleNnotif to:FromUser prefix:ss@filtering:{"name":"scala","source":" postfix:"}
 
 
-
 //S2からのファイルリクエスト
 id:FromS2_fileRequest type:1 destination:FROMS2_IDENTITY
 
