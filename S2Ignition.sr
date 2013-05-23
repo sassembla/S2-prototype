@@ -30,7 +30,5 @@ trans:FromGradleNnotif to:FromUser prefix:ss@filtering:{"name":"scala","source":
 id:FromS2_fileRequest type:1 destination:FROMS2_IDENTITY
 
 //接続
-connect:FromS2_fileRequest to:FromUser 
-
-//FromS2_fileRequestからFromUserへと通過時に通るフィルタ
-trans:FromS2_fileRequest to:FromUser prefix:ss@readFileData:{"path":" postfix:"}->(data|message)monocastMessage:{"target":"S2Client","message":"replace"}
+connect:FromS2_fileRequest to:FromUser
+//このコネクションへのトランスは無い。S2とSSの密結合でしか出来なそうだ。

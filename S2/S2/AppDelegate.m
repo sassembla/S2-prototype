@@ -248,13 +248,14 @@
             
             if ([targettedSuffixArray containsObject:suffix]) {
                 [m_codeDict setValue:@"" forKey:path];
-                [self emitMessage:path];
+                [self emitPullRequestMessage:path];
             }
         }
     }
     
     if (argsDict[KEY_UPDATE]) {
         //仮装ファイルの内容を上書きする、リストにindexが無ければ足す
+        NSLog(@"");
     }
     
     if (argsDict[KEY_COMPILE]) {
@@ -265,7 +266,11 @@
 }
 
 
-- (void) emitMessage:(NSString * )message {
+- (void) emitPullRequestMessage:(NSString * )sourcePath {
+    //SSへのリクエストを組み立てる。
+    NSString * message = [[NSString alloc]initWithFormat:@"%@%@%@%@%@", @"ss@readFileData:{\"path\":\"", sourcePath, @"\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update \",\"sender\":\"", sourcePath, @"\"}"];
+
+    NSLog(@"request is %@", message);
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":message} deliverImmediately:YES];
 }
 
