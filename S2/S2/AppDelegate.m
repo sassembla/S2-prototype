@@ -139,7 +139,35 @@
                 }
             }
         }
+        
+        if ([execs hasPrefix:KEY_COMPILE]) {
+            NSArray * headAndBody = [execs componentsSeparatedByString:@" "];
+            NSArray * latestPathsArray = [headAndBody[1] componentsSeparatedByString:@","];
 
+            //limit valid path by extension
+            NSArray * validExtensions = @[@"scala", @"gradle"];
+
+            NSMutableArray * validPathsArray = [[NSMutableArray alloc]init];
+            for (NSString * path in latestPathsArray) {
+                NSString * extension = [path pathExtension];
+                if ([validExtensions containsObject:extension]) {
+                    [validPathsArray addObject:path];
+                }
+            }
+            
+            //合致するもの以外を消す
+            NSArray * keysList = [NSArray arrayWithArray:[m_codeDict allKeys]];
+            for (NSString * path in keysList) {
+                if ([validPathsArray containsObject:path]) {
+                    
+                } else {
+                    [m_codeDict removeObjectForKey:path];
+                }
+            }
+        
+            NSLog(@"m_codeDict  %@", m_codeDict);
+        }
+        
         //updateはここで処理する -update:path sourcecode
         if ([execs hasPrefix:KEY_UPDATE]) {
             
@@ -272,12 +300,6 @@
         }
     }
    
-    
-    if (argsDict[KEY_COMPILE]) {
-        //リストの受け取り、リストに無い項目の削除、ファイル化、コンパイルを行う
-        
-        [self compile];
-    }
 }
 
 
