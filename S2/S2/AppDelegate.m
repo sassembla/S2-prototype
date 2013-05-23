@@ -251,10 +251,6 @@
                 [self emitMessage:path];
             }
         }
-        
-        
-        //完了したらreadyマークを出す
-        
     }
     
     if (argsDict[KEY_UPDATE]) {
