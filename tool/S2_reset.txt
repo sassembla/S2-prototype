@@ -1,0 +1,18 @@
+ss@ここまでで設定は完了。起動シーケンスに入る。リストと一緒に起動シグナルを送りつける/getAllFilePath:
+{
+    "anchor": "build.gradle",
+    "header": "S2@ -ignite "
+}
+->(paths|message)monocastMessage:
+{
+    "target": "S2Client",
+    "message": "replace"
+}
+->showAtLog:
+{
+    "message": "scala-compilation sequence ready!"
+}
+->showStatusMessage:
+{
+    "message": "scala-compilation sequence ready!"
+}

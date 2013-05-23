@@ -1,4 +1,4 @@
-ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。/inputIdentity:
+ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。0.1.0/inputIdentity:
 {
     "id": "S2Client"
 }
@@ -95,7 +95,7 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
         {
             "containsRegions": {
                 "target": "scala",
-                "emit": "ss_errorEmitted",
+                "emit": "event_errorEmitted",
                 "view": "replace"
             }
         }
@@ -104,7 +104,7 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
 ->setReactor:
 {
     "target": "scala",
-    "event": "ss_errorEmitted",
+    "event": "event_errorEmitted",
     "replacefromto": {
         "message": "message",
         "line": "title"
@@ -139,28 +139,9 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
     "interval": 100,
     "selectors": [
         {
-            "monocastMessage": {
-                "target": "S2Client",
-                "message": "S2@ -e S2:[\"/bin/sh\",\"/Users/mondogrosso/Desktop/S2/tool/ignite.sh\"]"
+            "runSetting": {
+                "path": "/Users/mondogrosso/Desktop/S2/tool/S2_compilation.txt"
             }
         }
     ]
-}
-->リストと一緒に起動シグナルを送りつける/getAllFilePath:
-{
-    "anchor": "build.gradle",
-    "header": "S2@ -ignite "
-}
-->(paths|message)monocastMessage:
-{
-    "target": "S2Client",
-    "message": "replace"
-}
-->showAtLog:
-{
-    "message": "scala-compilation sequence ready!"
-}
-->showStatusMessage:
-{
-    "message": "scala-compilation sequence ready!"
 }

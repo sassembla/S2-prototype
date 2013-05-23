@@ -22,6 +22,5 @@ emit:ss@showAtLog:{"message":"SR-S2-ready."}->showStatusMessage:{"message":"SR-S
 //フィルタの読み込み
 emitfile:/Users/mondogrosso/Desktop/S2/tool/ScalaFilter.txt to:WSToSTSS
 
-//通知
-emit:ss@showAtLog:{"message":"S2 compiler ready"}->showStatusMessage:{"message":"S2 compiler ready"} to:WSToSTSS
-
+//設定の完了
+emitfile:/Users/mondogrosso/Desktop/S2/tool/S2_reset.txt to:WSToSTSS

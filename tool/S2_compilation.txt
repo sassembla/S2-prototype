@@ -1,0 +1,10 @@
+getAllFilePath:
+{
+    "anchor": "build.gradle",
+    "header": "S2@ -compile "
+}
+->(paths|message)monocastMessage:
+{
+    "target": "S2Client",
+    "message": "replace"
+}
