@@ -240,7 +240,7 @@
         NSString * pathsListStr = argsDict[KEY_IGNITE];
         NSArray * pathArray = [pathsListStr componentsSeparatedByString:@","];
         
-        NSArray * targettedSuffixArray = @[@".scala", @".gradle"];
+        NSArray * targettedSuffixArray = @[@"scala", @"gradle"];
         
         for (NSString * path in pathArray) {
             
