@@ -27,13 +27,15 @@
 #define TEST_SOCKETROUNDABOUT_ENTRY     (@"S2Test_entry.sr")
 #define TEST_SOCKETROUNDABOUT_COMPILE_READY (@"S2Test_compile.sr")
 
-#define TEST_GROBAL_SR_PATH    (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
+#define TEST_GLOBAL_SR_PATH     (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
+#define TEST_GLOBAL_NNOTIF      (@"/Users/mondogrosso/Desktop/S2/S2/testResources/nnotif")
 
 #define TEST_FLAG_S2_LAUNCHED   (@"TEST_FLAG_S2_LAUNCHED")
 #define TEST_FLAG_S2_IGNITED    (@"TEST_FLAG_S2_IGNITED")
 #define TEST_FLAG_S2_USER_ENTRIED   (@"TEST_FLAG_S2_USER_ENTRIED")
 #define TEST_FLAG_S2_PULLING    (@"TEST_FLAG_S2_PULLING")
 #define TEST_FLAG_S2_UPDATED    (@"TEST_FLAG_S2_UPDATED")
+#define TEST_FLAG_S2_PULLED_ALL (@"TEST_FLAG_S2_PULLED_ALL")
 #define TEST_FLAG_S2_COMPILE_READY  (@"TEST_FLAG_S2_COMPILE_READY")
 #define TEST_FLAG_S2_COMPILE_START  (@"TEST_FLAG_S2_COMPILE_START")
 #define TEST_FLAG_S2_EXITED     (@"TEST_FLAG_S2_EXITED")
@@ -74,7 +76,7 @@
     NSString * testSRResourcePath = [[NSString alloc]initWithFormat:@"%@%@", TEST_RESOURCE_PATH, loadSRSettingFilePath];
     NSArray * execArray = @[@"-s", testSRResourcePath];
     NSTask * task = [[NSTask alloc]init];
-    [task setLaunchPath:TEST_GROBAL_SR_PATH];
+    [task setLaunchPath:TEST_GLOBAL_SR_PATH];
     [task setArguments:execArray];
     [task launch];
     return task;
@@ -104,6 +106,10 @@
             [m_flags addObject:TEST_FLAG_S2_UPDATED];
             break;
         }
+        case S2_EXEC_PULLED_ALL:{
+            [m_flags addObject:TEST_FLAG_S2_PULLED_ALL];
+            break;
+        }
         case S2_EXEC_COMPILE_READY:{
             [m_flags addObject:TEST_FLAG_S2_COMPILE_READY];
             break;
@@ -120,6 +126,18 @@
             break;
     }
 }
+
+- (void) sendNotification:(NSString * )identity withMessage:(NSString * )message withKey:(NSString * )key {
+    
+    NSArray * clArray = @[@"-t", identity, @"-k", key, @"-i", message];
+    
+    NSTask * task1 = [[NSTask alloc] init];
+    [task1 setLaunchPath:TEST_GLOBAL_NNOTIF];
+    [task1 setArguments:clArray];
+    [task1 launch];
+    [task1 waitUntilExit];
+}
+
 
 /**
  Launchまでのチェック
@@ -186,20 +204,37 @@
 
 
 /**
- コンパイルの開始
- (中身はテストからのプロセスだと失敗するため、稼働までを見なす)
+ 予定されているpullが終わったタイミングでのupdate完了=pulledAllな動作をチェックする
  */
-- (void) testCompileReady {
-    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
+- (void) testPullingOver {
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
     
-    //readyが一つでもあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
+    //pulled_overがあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
     
-    //compile ready シグナルの受け取り完了
+    //updateシグナルの受け取り完了
     [currentTask terminate];
 }
+
+///**
+// pull完了からコンパイル開始まで
+// */
+//- (void) testPullingOverThenStartFirstCompilation {
+//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
+//    
+//    //pulled_overがあったらOK
+//    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //SRへと、ダミーのコンパイルシグナルを出す
+//    [self sendNotification:@"DUMMY_NOTIF" withMessage:@"here" withKey:TEST_S2KEY_IDENTITY];
+//    
+//    //updateシグナルの受け取り完了
+//    [currentTask terminate];
+//}
 
 /**
  動作中のS2停止

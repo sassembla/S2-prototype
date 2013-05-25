@@ -163,3 +163,115 @@ S2 received:{
     "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
     messageCount = 41;
 }
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/build.gradle apply plugin:\"scala\"\napply plugin:\"maven\"\n\ntask wrapper(type: Wrapper) {\n    gradleVersion = '1.6'\n}\n\ndef encoding = 'UTF-8'\n\n[compileScala, compileTestScala].each{\n\tit.options.encoding = encoding\n}\n\nrepositories {\n\tmavenCentral()\n}\n\ndependencies {\n\tscalaTools  (\n\t\t[group: \"org.scala-lang\", name: \"scala-compiler\",version: \"2.10.1\"],\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n\t\n\tcompile (\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n}\n\n\n\n\n// compileScala {\n// \tscalaCompileOptions.useCompileDaemon = false\n// }\n\n// tasks.withType(ScalaCompile) {\n//     scalaCompileOptions.useAnt = false,\n// }\n// tasks.withType(ScalaCompile) {    \n//     configure(scalaCompileOptions.forkOptions) {\n//         memoryMaximumSize = '1g'\n//         jvmArgs = ['-XX:MaxPermSize=512m']\n//     }\n// }\n\n// jar {\n// \tmanifest {\n// \t\tattributes 'Main-class': \"com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders\"\n// \t}\n\t\n// \tfrom {\n// \t\tconfigurations.runtime.collect {\n// \t\t\tif (it.isDirectory()){\n// \t\t\t} else {\n// \t\t\t\tit\n// \t\t\t\tzipTree(it)\n// \t\t\t}\n// \t\t}\n// \t}\n\t\n// \tfrom {\n// \t\tfileTree(dir: 'resources', includes: ['*.*'])\n// \t}\n\t\n// \t//exclude('scala/**') \n// }\n\n";
+    messageCount = 42;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    messageCount = 43;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    messageCount = 44;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    messageCount = 45;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/build.gradle apply plugin:\"scala\"\napply plugin:\"maven\"\n\ntask wrapper(type: Wrapper) {\n    gradleVersion = '1.6'\n}\n\ndef encoding = 'UTF-8'\n\n[compileScala, compileTestScala].each{\n\tit.options.encoding = encoding\n}\n\nrepositories {\n\tmavenCentral()\n}\n\ndependencies {\n\tscalaTools  (\n\t\t[group: \"org.scala-lang\", name: \"scala-compiler\",version: \"2.10.1\"],\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n\t\n\tcompile (\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n}\n\n\n\n\n// compileScala {\n// \tscalaCompileOptions.useCompileDaemon = false\n// }\n\n// tasks.withType(ScalaCompile) {\n//     scalaCompileOptions.useAnt = false,\n// }\n// tasks.withType(ScalaCompile) {    \n//     configure(scalaCompileOptions.forkOptions) {\n//         memoryMaximumSize = '1g'\n//         jvmArgs = ['-XX:MaxPermSize=512m']\n//     }\n// }\n\n// jar {\n// \tmanifest {\n// \t\tattributes 'Main-class': \"com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders\"\n// \t}\n\t\n// \tfrom {\n// \t\tconfigurations.runtime.collect {\n// \t\t\tif (it.isDirectory()){\n// \t\t\t} else {\n// \t\t\t\tit\n// \t\t\t\tzipTree(it)\n// \t\t\t}\n// \t\t}\n// \t}\n\t\n// \tfrom {\n// \t\tfileTree(dir: 'resources', includes: ['*.*'])\n// \t}\n\t\n// \t//exclude('scala/**') \n// }\n\n";
+    messageCount = 46;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    messageCount = 47;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    messageCount = 48;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    messageCount = 49;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/build.gradle apply plugin:\"scala\"\napply plugin:\"maven\"\n\ntask wrapper(type: Wrapper) {\n    gradleVersion = '1.6'\n}\n\ndef encoding = 'UTF-8'\n\n[compileScala, compileTestScala].each{\n\tit.options.encoding = encoding\n}\n\nrepositories {\n\tmavenCentral()\n}\n\ndependencies {\n\tscalaTools  (\n\t\t[group: \"org.scala-lang\", name: \"scala-compiler\",version: \"2.10.1\"],\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n\t\n\tcompile (\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n}\n\n\n\n\n// compileScala {\n// \tscalaCompileOptions.useCompileDaemon = false\n// }\n\n// tasks.withType(ScalaCompile) {\n//     scalaCompileOptions.useAnt = false,\n// }\n// tasks.withType(ScalaCompile) {    \n//     configure(scalaCompileOptions.forkOptions) {\n//         memoryMaximumSize = '1g'\n//         jvmArgs = ['-XX:MaxPermSize=512m']\n//     }\n// }\n\n// jar {\n// \tmanifest {\n// \t\tattributes 'Main-class': \"com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders\"\n// \t}\n\t\n// \tfrom {\n// \t\tconfigurations.runtime.collect {\n// \t\t\tif (it.isDirectory()){\n// \t\t\t} else {\n// \t\t\t\tit\n// \t\t\t\tzipTree(it)\n// \t\t\t}\n// \t\t}\n// \t}\n\t\n// \tfrom {\n// \t\tfileTree(dir: 'resources', includes: ['*.*'])\n// \t}\n\t\n// \t//exclude('scala/**') \n// }\n\n";
+    messageCount = 50;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    messageCount = 51;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    messageCount = 52;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    messageCount = 53;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/build.gradle apply plugin:\"scala\"\napply plugin:\"maven\"\n\ntask wrapper(type: Wrapper) {\n    gradleVersion = '1.6'\n}\n\ndef encoding = 'UTF-8'\n\n[compileScala, compileTestScala].each{\n\tit.options.encoding = encoding\n}\n\nrepositories {\n\tmavenCentral()\n}\n\ndependencies {\n\tscalaTools  (\n\t\t[group: \"org.scala-lang\", name: \"scala-compiler\",version: \"2.10.1\"],\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n\t\n\tcompile (\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n}\n\n\n\n\n// compileScala {\n// \tscalaCompileOptions.useCompileDaemon = false\n// }\n\n// tasks.withType(ScalaCompile) {\n//     scalaCompileOptions.useAnt = false,\n// }\n// tasks.withType(ScalaCompile) {    \n//     configure(scalaCompileOptions.forkOptions) {\n//         memoryMaximumSize = '1g'\n//         jvmArgs = ['-XX:MaxPermSize=512m']\n//     }\n// }\n\n// jar {\n// \tmanifest {\n// \t\tattributes 'Main-class': \"com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders\"\n// \t}\n\t\n// \tfrom {\n// \t\tconfigurations.runtime.collect {\n// \t\t\tif (it.isDirectory()){\n// \t\t\t} else {\n// \t\t\t\tit\n// \t\t\t\tzipTree(it)\n// \t\t\t}\n// \t\t}\n// \t}\n\t\n// \tfrom {\n// \t\tfileTree(dir: 'resources', includes: ['*.*'])\n// \t}\n\t\n// \t//exclude('scala/**') \n// }\n\n";
+    messageCount = 54;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    messageCount = 55;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    messageCount = 56;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    messageCount = 57;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/build.gradle apply plugin:\"scala\"\napply plugin:\"maven\"\n\ntask wrapper(type: Wrapper) {\n    gradleVersion = '1.6'\n}\n\ndef encoding = 'UTF-8'\n\n[compileScala, compileTestScala].each{\n\tit.options.encoding = encoding\n}\n\nrepositories {\n\tmavenCentral()\n}\n\ndependencies {\n\tscalaTools  (\n\t\t[group: \"org.scala-lang\", name: \"scala-compiler\",version: \"2.10.1\"],\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n\t\n\tcompile (\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n}\n\n\n\n\n// compileScala {\n// \tscalaCompileOptions.useCompileDaemon = false\n// }\n\n// tasks.withType(ScalaCompile) {\n//     scalaCompileOptions.useAnt = false,\n// }\n// tasks.withType(ScalaCompile) {    \n//     configure(scalaCompileOptions.forkOptions) {\n//         memoryMaximumSize = '1g'\n//         jvmArgs = ['-XX:MaxPermSize=512m']\n//     }\n// }\n\n// jar {\n// \tmanifest {\n// \t\tattributes 'Main-class': \"com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders\"\n// \t}\n\t\n// \tfrom {\n// \t\tconfigurations.runtime.collect {\n// \t\t\tif (it.isDirectory()){\n// \t\t\t} else {\n// \t\t\t\tit\n// \t\t\t\tzipTree(it)\n// \t\t\t}\n// \t\t}\n// \t}\n\t\n// \tfrom {\n// \t\tfileTree(dir: 'resources', includes: ['*.*'])\n// \t}\n\t\n// \t//exclude('scala/**') \n// }\n\n";
+    messageCount = 58;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    messageCount = 59;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    messageCount = 60;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    messageCount = 61;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/build.gradle apply plugin:\"scala\"\napply plugin:\"maven\"\n\ntask wrapper(type: Wrapper) {\n    gradleVersion = '1.6'\n}\n\ndef encoding = 'UTF-8'\n\n[compileScala, compileTestScala].each{\n\tit.options.encoding = encoding\n}\n\nrepositories {\n\tmavenCentral()\n}\n\ndependencies {\n\tscalaTools  (\n\t\t[group: \"org.scala-lang\", name: \"scala-compiler\",version: \"2.10.1\"],\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n\t\n\tcompile (\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n}\n\n\n\n\n// compileScala {\n// \tscalaCompileOptions.useCompileDaemon = false\n// }\n\n// tasks.withType(ScalaCompile) {\n//     scalaCompileOptions.useAnt = false,\n// }\n// tasks.withType(ScalaCompile) {    \n//     configure(scalaCompileOptions.forkOptions) {\n//         memoryMaximumSize = '1g'\n//         jvmArgs = ['-XX:MaxPermSize=512m']\n//     }\n// }\n\n// jar {\n// \tmanifest {\n// \t\tattributes 'Main-class': \"com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders\"\n// \t}\n\t\n// \tfrom {\n// \t\tconfigurations.runtime.collect {\n// \t\t\tif (it.isDirectory()){\n// \t\t\t} else {\n// \t\t\t\tit\n// \t\t\t\tzipTree(it)\n// \t\t\t}\n// \t\t}\n// \t}\n\t\n// \tfrom {\n// \t\tfileTree(dir: 'resources', includes: ['*.*'])\n// \t}\n\t\n// \t//exclude('scala/**') \n// }\n\n";
+    messageCount = 62;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    messageCount = 63;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    messageCount = 64;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    messageCount = 65;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/build.gradle apply plugin:\"scala\"\napply plugin:\"maven\"\n\ntask wrapper(type: Wrapper) {\n    gradleVersion = '1.6'\n}\n\ndef encoding = 'UTF-8'\n\n[compileScala, compileTestScala].each{\n\tit.options.encoding = encoding\n}\n\nrepositories {\n\tmavenCentral()\n}\n\ndependencies {\n\tscalaTools  (\n\t\t[group: \"org.scala-lang\", name: \"scala-compiler\",version: \"2.10.1\"],\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n\t\n\tcompile (\n\t\t[group: \"org.scala-lang\", name: \"scala-library\",version: \"2.10.1\"]\n\t)\n}\n\n\n\n\n// compileScala {\n// \tscalaCompileOptions.useCompileDaemon = false\n// }\n\n// tasks.withType(ScalaCompile) {\n//     scalaCompileOptions.useAnt = false,\n// }\n// tasks.withType(ScalaCompile) {    \n//     configure(scalaCompileOptions.forkOptions) {\n//         memoryMaximumSize = '1g'\n//         jvmArgs = ['-XX:MaxPermSize=512m']\n//     }\n// }\n\n// jar {\n// \tmanifest {\n// \t\tattributes 'Main-class': \"com.kissaki.mondogrosso.mondogrossoProcessOrders.MondogrossoProcessOrders\"\n// \t}\n\t\n// \tfrom {\n// \t\tconfigurations.runtime.collect {\n// \t\t\tif (it.isDirectory()){\n// \t\t\t} else {\n// \t\t\t\tit\n// \t\t\t\tzipTree(it)\n// \t\t\t}\n// \t\t}\n// \t}\n\t\n// \tfrom {\n// \t\tfileTree(dir: 'resources', includes: ['*.*'])\n// \t}\n\t\n// \t//exclude('scala/**') \n// }\n\n";
+    messageCount = 66;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    messageCount = 67;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    messageCount = 68;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    messageCount = 69;
+}

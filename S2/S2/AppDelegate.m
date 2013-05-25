@@ -57,8 +57,8 @@
         
         m_codeDict = [[NSMutableDictionary alloc]init];
         
-        //initialize work
-        [self removeFiles];
+        //initialize workPath
+        [self removeFilesAtWorkPath];
         
         m_tasks = [[NSMutableArray alloc]init];
         m_pulling = [[NSMutableArray alloc]init];
@@ -99,16 +99,18 @@
             [self callParent:S2_EXEC_UPDATED];
             
             NSString * path = [head componentsSeparatedByString:@":"][1];
-//            NSString * headAndSpace = [[NSString alloc]initWithFormat:@"%@%@", head, @" "];
-            
-            //remove header from code
-//            NSRange rangeOfSubstring = [execs rangeOfString:headAndSpace];
             NSString * source = [execs substringFromIndex:([head length]+1)];
-            NSLog(@"path %@", path);
-            NSLog(@"source %@", source);
             
             //update code
             [m_codeDict setValue:source forKey:path];
+            
+            [m_pulling removeObject:path];
+            
+            //途中でソースコードが増えたりした場合には無効な通知
+            if ([m_pulling count] == 0) {
+                [self callParent:S2_EXEC_PULLED_ALL];
+                
+            }
         }
         
         
@@ -117,7 +119,6 @@
             [self reset];
             
             if (body) {
-                [self callParent:S2_EXEC_COMPILE_READY];
                 [self compile:body];
             } else {
                 NSString * compileId = [KSMessenger generateMID];
@@ -154,6 +155,9 @@
     
 }
 
+/**
+ 着火
+ */
 - (void) ignite {
     [self callParent:S2_EXEC_IGNITED];
     
@@ -194,19 +198,25 @@
     }
 }
 
+/**
+ STへのコード送付リクエストを出す
+ */
 - (NSString * ) emitPull:(NSString * )sourcePath withIdentity:(NSString * )identity {
     //SSへのリクエストを組み立てる。
-    NSString * pullIdentity = [KSMessenger generateMID];
-    NSString * message = [[NSString alloc]initWithFormat:@"ss@readFileData:{\"path\":\"%@\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update:%@ \"}->showAtLog:{\"message\":\"entry:%@\"}->showStatusMessage:{\"message\":\"entry:%@\"}", sourcePath, identity, pullIdentity, pullIdentity];
+    NSString * message = [[NSString alloc]initWithFormat:@"ss@readFileData:{\"path\":\"%@\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update:%@ \"}->showAtLog:{\"message\":\"pulled:%@\"}->showStatusMessage:{\"message\":\"pulled:%@\"}", sourcePath, identity, sourcePath, sourcePath];
 
     NSLog(@"request is %@", message);
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":message} deliverImmediately:YES];
     
     [self callParent:S2_EXEC_PULLING];
-    return pullIdentity;
+    return sourcePath;
 }
 
+/**
+ コンパイル
+ */
 - (void) compile:(NSString * )execs {
+    [self callParent:S2_EXEC_COMPILE_READY];
     NSArray * latestPathsArray = [execs componentsSeparatedByString:@","];
     
     //limit valid path by extension
@@ -223,7 +233,13 @@
         }
     }
     
-    if (!isValid) return;
+    if (!isValid) {
+        [self callParent:S2_EXEC_COMPILE_CANCELLED];
+        return;
+    }
+    
+    //ためしにみな消す
+    [self removeFilesAtWorkPath];
     
     //合致するもの以外を消す
     NSArray * keysList = [NSArray arrayWithArray:[m_codeDict allKeys]];
@@ -232,6 +248,7 @@
             
         } else {
             [m_codeDict removeObjectForKey:path];
+            
         }
     }
     
@@ -250,9 +267,8 @@
         return;
     }
     
-    NSLog(@"m_codeDict  %@", m_codeDict);
     //特定のフォルダに吐く
-    
+    [self generateFiles:m_codeDict];
     
     //特定のファイルのScalaをコンパイルする
     [self compileScalaAt:@"/Users/mondogrosso/Desktop/HelloWorld/build.gradle"];
@@ -284,12 +300,23 @@
     [m_tasks addObject:nnotifTask];
 }
 
+
+
+
+
+
+
+
 - (NSString * ) currentWorkPath {
     NSString * workPath = @"./work";
     return [[NSString alloc]initWithFormat:@"%@", workPath];
 }
 
-- (void) removeFiles {
+
+
+
+
+- (void) removeFilesAtWorkPath {
     //全部消す
     NSString * workPath = [self currentWorkPath];
     NSFileManager * fMan = [[NSFileManager alloc]init];
@@ -299,6 +326,10 @@
         
         NSString * removeTargetFilePath = [workPath stringByAppendingPathComponent:file];
         BOOL success = [fMan removeItemAtPath:removeTargetFilePath error:&error];
+        
+        if (!success) {
+            NSLog(@"消すのに失敗");
+        }
     }
 }
 
