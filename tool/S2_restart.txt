@@ -1,0 +1,13 @@
+ss@monocastMessage:
+{
+    "target": "S2Client",
+    "message": "-restart"
+}
+->showAtLog:
+{
+    "message": "S2 restarting"
+}
+->showStatusMessage:
+{
+    "message": "S2 restarting"
+}

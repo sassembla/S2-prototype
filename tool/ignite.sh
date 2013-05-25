@@ -1,1 +1,0 @@
-/Users/mondogrosso/Desktop/S2/tool/nnotif -t S2_IDENTITY -i "S2@ -e S2:[\"/usr/local/bin/gradle\", \"--daemon\", \"-b\", \"/Users/mondogrosso/Desktop/HelloWorld/build.gradle\", \"build\", \"-i\", \"|\", \"/Users/mondogrosso/Desktop/S2/tool/nnotif\", \"-t\", \"GRADLENOTIFY_IDENTITY\", \"--ignorebl\"]" -k S2_MANIPULATE -o ./nnotif.log

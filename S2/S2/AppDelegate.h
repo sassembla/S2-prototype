@@ -14,6 +14,19 @@
 
 #define KEY_PERFIX  (@"-")
 
+#define S2_MASTER   (@"S2_MASTER")
+
+typedef enum {
+    S2_EXEC_LAUNCHED,
+    S2_EXEC_IGNITED,
+    S2_EXEC_USER_ENTRIED,
+    S2_EXEC_PULLING,
+    S2_EXEC_UPDATED,
+    S2_EXEC_COMPILE_READY,
+    S2_EXEC_COMPILE_START,
+    S2_EXEC_EXITED
+} S2_EXECS;
+
 
 typedef enum {
     STATUS_STOPPED= 0,
@@ -24,29 +37,19 @@ typedef enum {
 #define VERSION (@"0.0.1")
 
 #define KEY_VERSION     (@"-v")
+#define KEY_PARENT      (@"-parent")
 
 
 #define KEY_IDENTITY    (@"-i")
-#define KEY_CONTROL     (@"-c")
 #define KEY_OUTPUT      (@"-o")
 #define KEY_KILL        (@"-kill")
-#define KEY_NOTIFID     (@"--nid")
-#define KEY_EXECUTE     (@"-e")
 
+//routing
 #define KEY_IGNITE      (@"-ignite")
+#define KEY_ENTRY       (@"-entry")
 #define KEY_UPDATE      (@"-update")
 #define KEY_COMPILE     (@"-compile")
-
-
-#define CODE_START  (@"start")
-#define CODE_STOP   (@"stop")
-
-
-#define DEBUG_BOOTFROMAPP   (@"DEBUG_BOOTFROMAPP")
-
-#define PRIVATEKEY_SERVERS     (@"servers")
-
-#define DEFAULT_OUTPUT_PATH (@"DEFAULT_OUTPUT_PATH")
+#define KEY_RESTART     (@"-restart")
 
 
 #define MESSAGE_LAUNCHED    (@"S2 launched")
@@ -63,35 +66,10 @@ typedef enum {
 #define MESSAGE_STOPSERVING (@"S2 stop serving")
 #define MESSAGE_TEARDOWN    (@"S2 teardown")
 
-//execute
-#define S2_HEADER   (@"S2@")
-#define S2_JSON_PARTITION   (@"S2:")
-#define S2_SPACE    (@" ")
-
-//routing
-#define S2_CONNECT      (@"S2_CONNECT")
-#define S2_UPDATE       (@"S2_UPDATE")
-#define S2_COMPILE      (@"S2_COMPILE")
-#define S2_MANIPULATE   (@"S2_MANIPULATE")
-
-
-#define DEFINE_PIPE (@"|")
-
-#define FAILBY_NOEXEC   (@"there is no executable command before '|'")
-#define FAILBY_NOSPACEWHILEPIPE   (@"there is no space before '|'. should be separate '|' in -e param")
-
-
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 - (id) initWithArgs:(NSDictionary * )dict;
-
-- (bool) isRunning;
-
-- (NSString * )identity;
-
 - (void) writeLogLine:(NSString * )message;
-- (NSArray * )bufferedOutput;
-- (NSArray * )runningTasks;
-- (NSString * )outputPath;
 
+- (void) close;
 @end

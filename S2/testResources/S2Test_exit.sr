@@ -1,0 +1,68 @@
+//S2のサーバ側の設定。WebSocketServerを立てる。
+
+//S2側で、8824に来たものをServeして、S2の動作を開始、最終的に返答を返す
+
+//外部からのInを受けるWebSocketServer
+id:FromUser type:0 destination:ws://127.0.0.1:8824
+
+//STからのOutを受けてnnotifdへと中継、S2を実行させる
+id:ToNNOTIFD type:1 destination:S2 option:outputKey:S2_KEY_2013_05_24_12_10_09
+
+//このへんでS2が動く
+
+//S2からのfilter受け
+id:FromS2 type:1 destination:GRADLENOTIFY_IDENTITY
+
+//接続
+//connect FromUser, nnotifdからS2起動、 
+connect:FromUser to:ToNNOTIFD
+
+//FromS2がそれを受け、FromUserへとout
+connect:FromS2 to:FromUser
+
+//FromS2からFromUserへと通過時に通るフィルタ
+trans:FromS2 to:FromUser prefix:ss@filtering:{"name":"scala","source":" postfix:"}
+
+
+//S2からのファイルリクエスト
+id:FromS2_fileRequest type:1 destination:FROMS2_IDENTITY
+
+//接続
+connect:FromS2_fileRequest to:FromUser
+//このコネクションへのトランスは無い。S2とSSの密結合でしか出来なそうだ。
+
+
+//ここから、クライアント部分の設定に入る
+
+
+//S2のクライアント側の設定。
+//ST->SSからのメッセージを、SRで受けるためのClient
+id:WSToSTSS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
+
+emit:ss@showAtLog:{"message":"ST-SR-connected."}->showStatusMessage:{"message":"ST-SR-connected."} to:WSToSTSS
+
+
+//現在のSTで展開中のファイルを基準点にセット(ST2の場合非同期、、、アキレス腱になりうる)
+emit:ss@setWindowBasePath:{} to:WSToSTSS
+
+//serveしたものを、S2へと送付するconnection
+id:SRToS2 type:0 destination:ws://127.0.0.1:8824 option:websocketas:client
+
+emit:ss@showAtLog:{"message":"SR-S2-connected."}->showStatusMessage:{"message":"SR-S2-connected."} to:WSToSTSS
+
+//接続 ST<->S2
+connect:WSToSTSS to:SRToS2
+connect:SRToS2 to:WSToSTSS
+
+emit:ss@showAtLog:{"message":"SR-S2-ready."}->showStatusMessage:{"message":"SR-S2-ready."} to:WSToSTSS
+
+//フィルタの読み込み
+emitfile:/Users/mondogrosso/Desktop/S2/tool/ScalaFilter.txt to:WSToSTSS
+
+//設定の完了
+emitfile:/Users/mondogrosso/Desktop/S2/tool/S2_reset.txt to:WSToSTSS
+
+//igniteが届いているはず
+
+//S2を再起動する
+emitfile:/Users/mondogrosso/Desktop/S2/tool/S2_restart.txt to:WSToSTSS

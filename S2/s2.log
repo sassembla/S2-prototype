@@ -1,0 +1,13 @@
+S2 launched
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-ignite";
+    messageCount = 1;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-entry /Users/mondogrosso/Desktop/S2/S2target/build.gradle,/Users/mondogrosso/Desktop/S2/S2target/build.sbt,/Users/mondogrosso/Desktop/S2/S2target/src/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala";
+    messageCount = 2;
+}
+S2 received:{
+    "S2_KEY_2013_05_24_12_10_09" = "-entry /Users/mondogrosso/Desktop/S2/S2target/build.gradle,/Users/mondogrosso/Desktop/S2/S2target/build.sbt,/Users/mondogrosso/Desktop/S2/S2target/src/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala";
+    messageCount = 3;
+}

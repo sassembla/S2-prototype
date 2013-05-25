@@ -1,0 +1,30 @@
+//S2のサーバ側の設定。WebSocketServerを立てる。
+
+//S2側で、8824に来たものをServeして、S2の動作を開始、最終的に返答を返す
+
+//外部からのInを受けるWebSocketServer
+id:FromUser type:0 destination:ws://127.0.0.1:8824
+
+//STからのOutを受けてnnotifdへと中継、S2を実行させる
+id:ToS2 type:1 destination:S2 option:outputKey:S2_KEY_2013_05_24_12_10_09
+
+connect:FromUser to:ToS2
+
+//このへんでS2が動く
+
+//ここから、クライアント部分の設定に入る
+
+
+//S2のクライアント側の設定。
+//ST->SSからのメッセージを、SRで受けるためのClient
+id:WSToSTSS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
+
+//serveしたものを、S2へと送付するconnection
+id:SRToS2 type:0 destination:ws://127.0.0.1:8824 option:websocketas:client
+
+//接続 ST<->S2
+connect:WSToSTSS to:SRToS2
+connect:SRToS2 to:WSToSTSS
+
+//接続完了後、STからS2起動のemit = -igniteを行う。
+emitfile:/Users/mondogrosso/Desktop/S2/S2/testResources/testIgnite.txt to:WSToSTSS

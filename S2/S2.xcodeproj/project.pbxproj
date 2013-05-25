@@ -18,6 +18,8 @@
 		135B1866174B9B8A00B13CA6 /* S2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B1865174B9B8A00B13CA6 /* S2Tests.m */; };
 		135B1871174BA18400B13CA6 /* S2.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B1870174BA18400B13CA6 /* S2.m */; };
 		135B1872174BA18400B13CA6 /* S2.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B1870174BA18400B13CA6 /* S2.m */; };
+		13CD52D3174F053C00651A41 /* KSMessenger.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CD52D2174F053C00651A41 /* KSMessenger.m */; };
+		13CD52D4174F053C00651A41 /* KSMessenger.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CD52D2174F053C00651A41 /* KSMessenger.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,8 @@
 		135B1865174B9B8A00B13CA6 /* S2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = S2Tests.m; sourceTree = "<group>"; };
 		135B186F174BA18400B13CA6 /* S2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = S2.h; sourceTree = "<group>"; };
 		135B1870174BA18400B13CA6 /* S2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = S2.m; sourceTree = "<group>"; };
+		13CD52D1174F053C00651A41 /* KSMessenger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMessenger.h; sourceTree = "<group>"; };
+		13CD52D2174F053C00651A41 /* KSMessenger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMessenger.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,7 @@
 		135B182F174B9B8900B13CA6 = {
 			isa = PBXGroup;
 			children = (
+				13CD52D0174F053C00651A41 /* KSMessenger */,
 				135B1841174B9B8900B13CA6 /* S2 */,
 				135B185E174B9B8A00B13CA6 /* S2Tests */,
 				135B183A174B9B8900B13CA6 /* Frameworks */,
@@ -152,6 +157,15 @@
 				135B1861174B9B8A00B13CA6 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		13CD52D0174F053C00651A41 /* KSMessenger */ = {
+			isa = PBXGroup;
+			children = (
+				13CD52D1174F053C00651A41 /* KSMessenger.h */,
+				13CD52D2174F053C00651A41 /* KSMessenger.m */,
+			);
+			path = KSMessenger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,6 +278,7 @@
 				135B1848174B9B8A00B13CA6 /* main.m in Sources */,
 				135B184F174B9B8A00B13CA6 /* AppDelegate.m in Sources */,
 				135B1871174BA18400B13CA6 /* S2.m in Sources */,
+				13CD52D3174F053C00651A41 /* KSMessenger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +288,7 @@
 			files = (
 				135B1866174B9B8A00B13CA6 /* S2Tests.m in Sources */,
 				135B1872174BA18400B13CA6 /* S2.m in Sources */,
+				13CD52D4174F053C00651A41 /* KSMessenger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +462,7 @@
 				135B186B174B9B8A00B13CA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		135B186C174B9B8A00B13CA6 /* Build configuration list for PBXNativeTarget "S2Tests" */ = {
 			isa = XCConfigurationList;
@@ -454,6 +471,7 @@
 				135B186E174B9B8A00B13CA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

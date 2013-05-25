@@ -1,0 +1,9 @@
+ss@テスト用の起動シグナル送信/inputIdentity:
+{
+    "id": "S2Client"
+}
+->monocastMessage:
+{
+    "target": "S2Client",
+    "message": "-ignite"
+}

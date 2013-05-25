@@ -12,31 +12,201 @@
  */
 #import <SenTestingKit/SenTestingKit.h>
 
+#import "KSMessenger.h"
+#import "AppDelegate.h"
 
+#define TEST_MASTER (@"TEST_MASTER")
+#define TEST_OUTPUT (@"./s2.log")
 
+#define TEST_RESOURCE_PATH   (@"./testResources/")
+
+#define TEST_SOCKETROUNDABOUT_LAUNCH  (@"S2Test_launch.sr")
+#define TEST_SOCKETROUNDABOUT_IGNITE    (@"S2Test_ignite.sr")
+#define TEST_SOCKETROUNDABOUT_ENTRY     (@"S2Test_entry.sr")
+
+#define TEST_GROBAL_SR_PATH    (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
+
+#define TEST_FLAG_S2_LAUNCHED   (@"TEST_FLAG_S2_LAUNCHED")
+#define TEST_FLAG_S2_IGNITED    (@"TEST_FLAG_S2_IGNITED")
+#define TEST_FLAG_S2_USER_ENTRIED   (@"TEST_FLAG_S2_USER_ENTRIED")
+#define TEST_FLAG_S2_PULLING    (@"TEST_FLAG_S2_PULLING")
+#define TEST_FLAG_S2_UPDATED    (@"TEST_FLAG_S2_UPDATED")
+#define TEST_FLAG_S2_COMPILE_READY  (@"TEST_FLAG_S2_COMPILE_READY")
+#define TEST_FLAG_S2_COMPILE_START  (@"TEST_FLAG_S2_COMPILE_START")
+#define TEST_FLAG_S2_EXITED     (@"TEST_FLAG_S2_EXITED")
 @interface S2Tests : SenTestCase
 
 @end
 
-@implementation S2Tests
-
-- (void)setUp
-{
-    [super setUp];
+@implementation S2Tests {
+    KSMessenger * messenger;
+    AppDelegate * appDel;
+    
+    NSMutableArray * m_flags;
 }
 
-- (void)tearDown
-{
+- (void)setUp {
+    [super setUp];
+    messenger = [[KSMessenger alloc]initWithBodyID:self withSelector:@selector(receiver:) withName:TEST_MASTER];
+    m_flags = [[NSMutableArray alloc]init];
+    
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:TEST_MASTER, KEY_OUTPUT:TEST_OUTPUT}]; 
+}
+
+- (void)tearDown {
+    [appDel close];
+    
+    STAssertTrue([m_flags containsObject:TEST_FLAG_S2_EXITED], @"not contained, %@", m_flags);
+    [m_flags removeAllObjects];
+    
+
+    [messenger closeConnection];
     [super tearDown];
 }
 
+/**
+ .srファイルの起動を行う
+ */
+- (NSTask * ) controlSR:(NSString * )loadSRSettingFilePath {
+    NSString * testSRResourcePath = [[NSString alloc]initWithFormat:@"%@%@", TEST_RESOURCE_PATH, loadSRSettingFilePath];
+    NSArray * execArray = @[@"-s", testSRResourcePath];
+    NSTask * task = [[NSTask alloc]init];
+    [task setLaunchPath:TEST_GROBAL_SR_PATH];
+    [task setArguments:execArray];
+    [task launch];
+    return task;
+}
+
+- (void) receiver:(NSNotification * )notif {
+    NSDictionary * dict = [messenger tagValueDictionaryFromNotification:notif];
+    
+    switch ([messenger execFrom:S2_MASTER viaNotification:notif]) {
+        case S2_EXEC_LAUNCHED:{
+            [m_flags addObject:TEST_FLAG_S2_LAUNCHED];
+            break;
+        }
+        case S2_EXEC_IGNITED:{
+            [m_flags addObject:TEST_FLAG_S2_IGNITED];
+            break;
+        }
+        case S2_EXEC_USER_ENTRIED:{
+            [m_flags addObject:TEST_FLAG_S2_USER_ENTRIED];
+            break;
+        }
+        case S2_EXEC_PULLING:{
+            [m_flags addObject:TEST_FLAG_S2_PULLING];
+            break;
+        }
+        case S2_EXEC_UPDATED:{
+            [m_flags addObject:TEST_FLAG_S2_UPDATED];
+            break;
+        }
+        case S2_EXEC_COMPILE_READY:{
+            [m_flags addObject:TEST_FLAG_S2_COMPILE_READY];
+            break;
+        }
+        case S2_EXEC_COMPILE_START:{
+            [m_flags addObject:TEST_FLAG_S2_COMPILE_START];
+            break;
+        }
+        case S2_EXEC_EXITED:{
+            [m_flags addObject:TEST_FLAG_S2_EXITED];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+///**
+// Launchまでのチェック
+// */
+//- (void) testLaunch {
+//    NSTask * currentTask = [self launchSocketRoundabout];
+//    
+//    /**
+//     起動したタイミングで、なにが起こっていてほしいか
+//     ・リソースが葬ってある
+//     */
+//    
+//    while (![m_flags containsObject:TEST_FLAG_S2_LAUNCHED]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //起動シグナルの受け取り完了
+//    [currentTask terminate];
+//}
+//
+///**
+// 着火までのチェック
+// */
+//- (void) testIgnite {
+//    NSTask * currentTask = [self igniteS2];
+//    
+//    while (![m_flags containsObject:TEST_FLAG_S2_IGNITED]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //着火シグナルの受け取り完了
+//    [currentTask terminate];
+//}
 
 /**
- どうやってテストするか。まず、発射側をつくらんとな。
+ 着火後、リスト取得、ソース取得を行う
  */
-- (void) test {
+- (void) testPulling {
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
     
-    STFail(@"Unit tests are not implemented yet in S2Tests");
+        //updateが一つでもあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_USER_ENTRIED]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+
+    
+    //着火シグナルの受け取り完了
+    [currentTask terminate];
 }
+
+
+/*
+ 直交する状態のコレクションは、
+ ignited,
+ pulling,
+ update,
+ ready->start
+ 
+ reset, exited は別　なので、直交する
+ */
+
+
+/**
+ 動作中のS2停止
+ */
+//- (void) testExit {
+////    while (![m_flags containsObject:TEST_FLAG_S2_IGNITED]) {
+////        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+////    }
+//
+////    [self run];
+//}
+
+/**
+ 起動後の再起動
+ */
+//- (void) testReset {
+//    
+//}
+
+
+
+//
+//- (void) testCompile {
+//    STFail(@"Unit tests are not implemented yet in S2Tests");
+//}
+//
+//- (void) testUpdate {
+//    
+//}
+
 
 @end
