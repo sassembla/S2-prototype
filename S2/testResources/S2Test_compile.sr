@@ -1,6 +1,4 @@
-//S2のサーバ側の設定。WebSocketServerを立てる。
-
-//S2側で、8824に来たものをServeして、S2の動作を開始、最終的に返答を返す
+//コンパイル開始まで
 
 //外部からのInを受けるWebSocketServer
 id:FromUser type:0 destination:ws://127.0.0.1:8824
@@ -10,7 +8,14 @@ id:ToS2 type:1 destination:TEST_S2KEY_IDENTITY option:outputKey:S2_KEY_2013_05_2
 
 connect:FromUser to:ToS2
 
-//このへんでS2が動く
+//S2からSTへののリクエスト経路
+id:FromS2_request type:1 destination:FROMS2_IDENTITY
+
+connect:ToS2 to:FromS2_request
+
+//FromS2_requestをFromUserに直結
+connect:FromS2_request to:FromUser
+
 
 //ここから、クライアント部分の設定に入る
 
@@ -26,5 +31,7 @@ id:SRToS2 type:0 destination:ws://127.0.0.1:8824 option:websocketas:client
 connect:WSToSTSS to:SRToS2
 connect:SRToS2 to:WSToSTSS
 
-//接続完了後、STからS2起動のemit = -igniteを行う。
-emitfile:/Users/mondogrosso/Desktop/S2/S2/testResources/testIgnite.txt to:WSToSTSS
+emit:hereComes to:WSToSTSS
+
+//接続完了後、STからS2起動のemit = -igniteを行う。ignite後、S2からentryが開始されるが、かまわずcompileを送る
+emitfile:/Users/mondogrosso/Desktop/S2/S2/testResources/testCompile.txt to:WSToSTSS

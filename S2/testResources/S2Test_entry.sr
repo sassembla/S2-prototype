@@ -4,10 +4,9 @@
 id:FromUser type:0 destination:ws://127.0.0.1:8824
 
 //STからのOutを受けてnnotifdへと中継、S2を実行させる
-id:ToS2 type:1 destination:S2 option:outputKey:S2_KEY_2013_05_24_12_10_09
+id:ToS2 type:1 destination:TEST_S2KEY_IDENTITY option:outputKey:S2_KEY_2013_05_24_12_10_09
 
 connect:FromUser to:ToS2
-
 
 //S2からSTへののリクエスト経路
 id:FromS2_request type:1 destination:FROMS2_IDENTITY

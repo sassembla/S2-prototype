@@ -1,0 +1,22 @@
+ss@テスト用のコンパイルシグナル送信。/inputIdentity:
+{
+    "id": "S2Client"
+}
+->monocastMessage:
+{
+    "target": "S2Client",
+    "message": "-ignite"
+}
+->showAtLog:
+{
+	"message":"ignite over, then"
+}
+->monocastMessage:
+{
+    "target": "S2Client",
+    "message": "-compile"
+}
+->showAtLog:
+{
+	"message":"compile emit"
+}

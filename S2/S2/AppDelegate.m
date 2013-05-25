@@ -23,6 +23,7 @@
     NSFileHandle * m_writeHandle;
     
     NSMutableArray * m_tasks;
+    NSMutableArray * m_pulling;
 }
 
 
@@ -36,8 +37,11 @@
         messenger = [[KSMessenger alloc]initWithBodyID:self withSelector:@selector(receiver:) withName:S2_MASTER];
         if (dict[KEY_PARENT]) {
             [messenger connectParent:dict[KEY_PARENT]];
-            [[NSDistributedNotificationCenter defaultCenter]addObserver:self selector:@selector(distNotifReceiver:) name:S2_IDENTITY object:nil];
         }
+        
+        if (dict[KEY_IDENTITY]) {
+            [[NSDistributedNotificationCenter defaultCenter]addObserver:self selector:@selector(distNotifReceiver:) name:dict[KEY_IDENTITY] object:nil];
+        } else [[NSDistributedNotificationCenter defaultCenter]addObserver:self selector:@selector(distNotifReceiver:) name:S2_IDENTITY object:nil];
         
         [self callParent:S2_EXEC_LAUNCHED];
         
@@ -57,6 +61,7 @@
         [self removeFiles];
         
         m_tasks = [[NSMutableArray alloc]init];
+        m_pulling = [[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -90,8 +95,9 @@
         }
         
         //update -update:path sourcecode
-        if ([head isEqualToString:KEY_UPDATE]) {
-
+        if ([head hasPrefix:KEY_UPDATE]) {
+            [self callParent:S2_EXEC_UPDATED];
+            
             NSString * path = [head componentsSeparatedByString:@":"][1];
 //            NSString * headAndSpace = [[NSString alloc]initWithFormat:@"%@%@", head, @" "];
             
@@ -110,9 +116,17 @@
             //すでにコンパイル中であったら即停止
             [self reset];
             
-            [self callParent:S2_EXEC_COMPILE_READY];
+            if (body) {
+                [self callParent:S2_EXEC_COMPILE_READY];
+                [self compile:body];
+            } else {
+                NSString * compileId = [KSMessenger generateMID];
+                [self callParent:S2_EXEC_COMPILE_INFOREQUST];
+                NSString * entryRequestMessage = [[NSString alloc] initWithFormat:@"ss@getAllFilePath:{\"anchor\":\"build.gradle\",\"header\":\"-compile \"}->(paths|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\"}->showAtLog:{\"message\":\"entry:%@\"}->showStatusMessage:{\"message\":\"entry:%@\"}", compileId, compileId];
+                
+                [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":entryRequestMessage} deliverImmediately:YES];
+            }
             
-            [self compile:body];
         }
 
         
@@ -147,7 +161,6 @@
     
     NSString * entryRequestMessage = [[NSString alloc] initWithFormat:@"ss@getAllFilePath:{\"anchor\":\"build.gradle\",\"header\":\"-entry \"}->(paths|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\"}->showAtLog:{\"message\":\"entry...%@\"}->showStatusMessage:{\"message\":\"entry...%@\"}", entryId, entryId];
 
-    NSLog(@"request is %@", entryRequestMessage);
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":entryRequestMessage} deliverImmediately:YES];
     
 }
@@ -155,12 +168,14 @@
 /**
  エントリー受付
  ST側からの近況コード一式を受け取る
+ 
+ エントリー失敗はログに出る。
  */
 - (void) entry:(NSString * )listSource {
     NSArray * targettedSuffixArray = @[@"scala", @"gradle"];
     [self callParent:S2_EXEC_USER_ENTRIED];
     
-    
+    [m_pulling removeAllObjects];
     
     //start pull source
     NSArray * pathArray = [listSource componentsSeparatedByString:@","];
@@ -170,24 +185,29 @@
 
         if ([targettedSuffixArray containsObject:suffix]) {
             [m_codeDict setValue:@"" forKey:path];
-            [self emitPull:path withIdentity:path];
+            [m_pulling addObject:[self emitPull:path withIdentity:path]];
         }
+    }
+    
+    if ([m_codeDict count] == 0) {
+        NSLog(@"no compilation target file contains");
     }
 }
 
-- (void) emitPull:(NSString * )sourcePath withIdentity:(NSString * )identity {
+- (NSString * ) emitPull:(NSString * )sourcePath withIdentity:(NSString * )identity {
     //SSへのリクエストを組み立てる。
-    NSString * message = [[NSString alloc]initWithFormat:@"%@%@%@%@%@", @"ss@readFileData:{\"path\":\"", sourcePath, @"\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update:",identity, @" \"}"];
+    NSString * pullIdentity = [KSMessenger generateMID];
+    NSString * message = [[NSString alloc]initWithFormat:@"ss@readFileData:{\"path\":\"%@\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update:%@ \"}->showAtLog:{\"message\":\"entry:%@\"}->showStatusMessage:{\"message\":\"entry:%@\"}", sourcePath, identity, pullIdentity, pullIdentity];
 
     NSLog(@"request is %@", message);
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":message} deliverImmediately:YES];
     
     [self callParent:S2_EXEC_PULLING];
+    return pullIdentity;
 }
 
 - (void) compile:(NSString * )execs {
-    NSArray * headAndBody = [execs componentsSeparatedByString:@" "];
-    NSArray * latestPathsArray = [headAndBody[1] componentsSeparatedByString:@","];
+    NSArray * latestPathsArray = [execs componentsSeparatedByString:@","];
     
     //limit valid path by extension
     NSArray * validExtensions = @[@"scala", @"gradle"];

@@ -16,6 +16,8 @@
 #import "AppDelegate.h"
 
 #define TEST_MASTER (@"TEST_MASTER")
+#define TEST_S2KEY_IDENTITY   (@"TEST_S2KEY_IDENTITY")
+
 #define TEST_OUTPUT (@"./s2.log")
 
 #define TEST_RESOURCE_PATH   (@"./testResources/")
@@ -23,6 +25,7 @@
 #define TEST_SOCKETROUNDABOUT_LAUNCH  (@"S2Test_launch.sr")
 #define TEST_SOCKETROUNDABOUT_IGNITE    (@"S2Test_ignite.sr")
 #define TEST_SOCKETROUNDABOUT_ENTRY     (@"S2Test_entry.sr")
+#define TEST_SOCKETROUNDABOUT_COMPILE_READY (@"S2Test_compile.sr")
 
 #define TEST_GROBAL_SR_PATH    (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
 
@@ -50,7 +53,7 @@
     messenger = [[KSMessenger alloc]initWithBodyID:self withSelector:@selector(receiver:) withName:TEST_MASTER];
     m_flags = [[NSMutableArray alloc]init];
     
-    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:TEST_MASTER, KEY_OUTPUT:TEST_OUTPUT}]; 
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:TEST_MASTER, KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY}];
 }
 
 - (void)tearDown {
@@ -118,11 +121,11 @@
     }
 }
 
-///**
-// Launchまでのチェック
-// */
+/**
+ Launchまでのチェック
+ */
 //- (void) testLaunch {
-//    NSTask * currentTask = [self launchSocketRoundabout];
+//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_LAUNCH];
 //    
 //    /**
 //     起動したタイミングで、なにが起こっていてほしいか
@@ -136,48 +139,67 @@
 //    //起動シグナルの受け取り完了
 //    [currentTask terminate];
 //}
-//
-///**
-// 着火までのチェック
-// */
-//- (void) testIgnite {
-//    NSTask * currentTask = [self igniteS2];
-//    
-//    while (![m_flags containsObject:TEST_FLAG_S2_IGNITED]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //着火シグナルの受け取り完了
-//    [currentTask terminate];
-//}
 
 /**
- 着火後、リスト取得、ソース取得を行う
+ 着火までのチェック
  */
-- (void) testPulling {
-    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
+- (void) testIgnite {
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_IGNITE];
     
-        //updateが一つでもあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_USER_ENTRIED]) {
+    while (![m_flags containsObject:TEST_FLAG_S2_IGNITED]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
-
     
     //着火シグナルの受け取り完了
     [currentTask terminate];
 }
 
-
-/*
- 直交する状態のコレクションは、
- ignited,
- pulling,
- update,
- ready->start
- 
- reset, exited は別　なので、直交する
+/**
+ 着火後、entryを行う
  */
+- (void) testEntry {
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
+    
+    //entryがあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_USER_ENTRIED]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
 
+    //entryシグナルの受け取り完了
+    [currentTask terminate];
+}
+
+/**
+ 着火後 ソース取得までをチェック
+ */
+- (void) testPulling {
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
+    
+    //updateが一つでもあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_UPDATED]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //updateシグナルの受け取り完了
+    [currentTask terminate];
+}
+
+
+/**
+ コンパイルの開始
+ (中身はテストからのプロセスだと失敗するため、稼働までを見なす)
+ */
+- (void) testCompileReady {
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
+    
+    //readyが一つでもあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //compile ready シグナルの受け取り完了
+    [currentTask terminate];
+}
 
 /**
  動作中のS2停止
