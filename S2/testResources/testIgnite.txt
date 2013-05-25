@@ -1,4 +1,4 @@
-ss@テスト用の起動シグナル送信/inputIdentity:
+ss@テスト用の起動シグナル送信。/inputIdentity:
 {
     "id": "S2Client"
 }
@@ -6,4 +6,8 @@ ss@テスト用の起動シグナル送信/inputIdentity:
 {
     "target": "S2Client",
     "message": "-ignite"
+}
+->showAtLog:
+{
+	"message":"ignite over"
 }

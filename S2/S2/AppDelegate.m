@@ -34,13 +34,16 @@
     
     if (self = [super init]) {
         messenger = [[KSMessenger alloc]initWithBodyID:self withSelector:@selector(receiver:) withName:S2_MASTER];
-        if (dict[KEY_PARENT]) [messenger connectParent:dict[KEY_PARENT]];
+        if (dict[KEY_PARENT]) {
+            [messenger connectParent:dict[KEY_PARENT]];
+            [[NSDistributedNotificationCenter defaultCenter]addObserver:self selector:@selector(distNotifReceiver:) name:S2_IDENTITY object:nil];
+        }
         
         [self callParent:S2_EXEC_LAUNCHED];
         
         m_settingDict = [[NSMutableDictionary alloc]initWithDictionary:@{KEY_IDENTITY:S2_IDENTITY}];
         
-        [[NSDistributedNotificationCenter defaultCenter]addObserver:self selector:@selector(distNotifReceiver:) name:S2_IDENTITY object:nil];
+        
         
         if (dict[KEY_OUTPUT]) {
             [self setOutput:dict[KEY_OUTPUT]];
@@ -60,15 +63,21 @@
 
 - (void) distNotifReceiver:(NSNotification * )notif {
     NSDictionary * dict = [notif userInfo];
-    NSLog(@"dict%@", dict);
+    NSLog(@"distNotifReceiver dict%@", dict);
     [self writeLogLine:[NSString stringWithFormat:@"%@%@", MESSAGE_RECEIVED, dict]];
     
     //コマンドライン動作を行う
     if (dict[S2_KEY]) {
         NSString * execs = [[NSString alloc]initWithString:dict[S2_KEY]];
         NSArray * headAndBody = [[execs componentsSeparatedByString:@" "] subarrayWithRange:NSMakeRange(0,1)];
+        
         NSString * head = headAndBody[0];
-        NSString * body = [[execs componentsSeparatedByString:head] subarrayWithRange:NSMakeRange(0,2)][1];
+        NSString * headAndSpace = [[NSString alloc]initWithFormat:@"%@ ", head];
+        NSString * body;
+        
+        if ([head length] < [execs length]) {
+            body = [execs substringFromIndex:[headAndSpace length]];
+        }
         
         //ignite 引数無し
         if ([execs isEqualToString:KEY_IGNITE]) {
@@ -133,15 +142,14 @@
 
 - (void) ignite {
     [self callParent:S2_EXEC_IGNITED];
-    NSDate * date = [[NSDate alloc]init];
-    long dateSec = [date timeIntervalSinceNow];
-
-    NSString * entryRequestMessage = [[NSString alloc] initWithFormat:@"ss@getAllFilePath:{\"anchor\":\"build.gradle\",\"header\":\"-entry \"}->(paths|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\"}->showAtLog:{\"message\":\"entry...%ld\"}->showStatusMessage:{\"message\":\"entry...%ld\"}",dateSec,dateSec];
+    
+    NSString * entryId = [KSMessenger generateMID];
+    
+    NSString * entryRequestMessage = [[NSString alloc] initWithFormat:@"ss@getAllFilePath:{\"anchor\":\"build.gradle\",\"header\":\"-entry \"}->(paths|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\"}->showAtLog:{\"message\":\"entry...%@\"}->showStatusMessage:{\"message\":\"entry...%@\"}", entryId, entryId];
 
     NSLog(@"request is %@", entryRequestMessage);
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":entryRequestMessage} deliverImmediately:YES];
     
-    NSLog(@"何回ながれているのやら");
 }
 
 /**
@@ -151,6 +159,8 @@
 - (void) entry:(NSString * )listSource {
     NSArray * targettedSuffixArray = @[@"scala", @"gradle"];
     [self callParent:S2_EXEC_USER_ENTRIED];
+    
+    
     
     //start pull source
     NSArray * pathArray = [listSource componentsSeparatedByString:@","];

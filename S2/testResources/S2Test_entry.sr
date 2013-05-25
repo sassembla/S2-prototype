@@ -32,5 +32,7 @@ id:SRToS2 type:0 destination:ws://127.0.0.1:8824 option:websocketas:client
 connect:WSToSTSS to:SRToS2
 connect:SRToS2 to:WSToSTSS
 
+emit:hereComes to:WSToSTSS
+
 //接続完了後、STからS2起動のemit = -igniteを行う。ignite後、S2からentryが開始される
 emitfile:/Users/mondogrosso/Desktop/S2/S2/testResources/testIgnite.txt to:WSToSTSS
