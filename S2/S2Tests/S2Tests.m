@@ -55,7 +55,7 @@
     messenger = [[KSMessenger alloc]initWithBodyID:self withSelector:@selector(receiver:) withName:TEST_MASTER];
     m_flags = [[NSMutableArray alloc]init];
     
-    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:TEST_MASTER, KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY}];
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY}];
 }
 
 - (void)tearDown {
@@ -129,8 +129,8 @@
 
 - (void) sendNotification:(NSString * )identity withMessage:(NSString * )message withKey:(NSString * )key {
     
-    NSArray * clArray = @[@"-t", identity, @"-k", key, @"-i", message];
-    
+    NSArray * clArray = @[@"-t", identity, @"-i", message, @"-o", @"./test.log"];
+    NSLog(@"clArray %@", clArray);
     NSTask * task1 = [[NSTask alloc] init];
     [task1 setLaunchPath:TEST_GLOBAL_NNOTIF];
     [task1 setArguments:clArray];
@@ -218,23 +218,28 @@
     [currentTask terminate];
 }
 
-///**
-// pull完了からコンパイル開始まで
-// */
-//- (void) testPullingOverThenStartFirstCompilation {
-//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
-//    
-//    //pulled_overがあったらOK
-//    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //SRへと、ダミーのコンパイルシグナルを出す
-//    [self sendNotification:@"DUMMY_NOTIF" withMessage:@"here" withKey:TEST_S2KEY_IDENTITY];
-//    
-//    //updateシグナルの受け取り完了
-//    [currentTask terminate];
-//}
+/**
+ pull完了からコンパイル開始まで
+ */
+- (void) testPullingOverThenStartFirstCompilation {
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
+    
+    //pulled_overがあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //SRへと、ダミーのコンパイルシグナルを出す
+    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
+    
+    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+
+    
+    //updateシグナルの受け取り完了
+    [currentTask terminate];
+}
 
 /**
  動作中のS2停止

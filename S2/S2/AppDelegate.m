@@ -108,13 +108,12 @@
             
             //途中でソースコードが増えたりした場合には無効な通知
             if ([m_pulling count] == 0) {
-                [self callParent:S2_EXEC_PULLED_ALL];
-                
+                [self callParent:S2_EXEC_PULLED_ALL];   
             }
         }
         
         
-        if ([head isEqualToString:KEY_COMPILE]) {
+        if ([head isEqualToString:KEY_COMPILE] || [head isEqualToString:KEY_COMPILE_DUMMY]) {
             //すでにコンパイル中であったら即停止
             [self reset];
             

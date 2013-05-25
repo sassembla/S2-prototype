@@ -52,6 +52,7 @@ typedef enum {
 #define KEY_ENTRY       (@"-entry")
 #define KEY_UPDATE      (@"-update")
 #define KEY_COMPILE     (@"-compile")
+#define KEY_COMPILE_DUMMY   (@"S2-compile")
 #define KEY_RESTART     (@"-restart")
 
 

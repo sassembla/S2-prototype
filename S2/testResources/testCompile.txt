@@ -11,12 +11,3 @@ ss@テスト用のコンパイルシグナル送信。/inputIdentity:
 {
 	"message":"ignite over, then"
 }
-->monocastMessage:
-{
-    "target": "S2Client",
-    "message": "-compile"
-}
-->showAtLog:
-{
-	"message":"compile emit"
-}
