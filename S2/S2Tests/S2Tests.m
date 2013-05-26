@@ -16,16 +16,23 @@
 #import "AppDelegate.h"
 
 #define TEST_MASTER (@"TEST_MASTER")
-#define TEST_S2KEY_IDENTITY   (@"TEST_S2KEY_IDENTITY")
+#define TEST_S2KEY_IDENTITY_0   (@"TEST_S2KEY_IDENTITY_0")
+#define TEST_S2KEY_IDENTITY_1   (@"TEST_S2KEY_IDENTITY_1")
+#define TEST_S2KEY_IDENTITY_2   (@"TEST_S2KEY_IDENTITY_2")
+#define TEST_S2KEY_IDENTITY_3   (@"TEST_S2KEY_IDENTITY_3")
+#define TEST_S2KEY_IDENTITY_4   (@"TEST_S2KEY_IDENTITY_4")
+#define TEST_S2KEY_IDENTITY_5   (@"TEST_S2KEY_IDENTITY_5")
 
 #define TEST_OUTPUT (@"./s2.log")
 
 #define TEST_RESOURCE_PATH   (@"./testResources/")
 
-#define TEST_SOCKETROUNDABOUT_LAUNCH  (@"S2Test_launch.sr")
-#define TEST_SOCKETROUNDABOUT_IGNITE    (@"S2Test_ignite.sr")
-#define TEST_SOCKETROUNDABOUT_ENTRY     (@"S2Test_entry.sr")
-#define TEST_SOCKETROUNDABOUT_COMPILE_READY (@"S2Test_compile.sr")
+#define TEST_SOCKETROUNDABOUT_0_LAUNCH  (@"S2Test_0_launch.sr")
+#define TEST_SOCKETROUNDABOUT_1_IGNITE    (@"S2Test_1_ignite.sr")
+#define TEST_SOCKETROUNDABOUT_2_ENTRY     (@"S2Test_2_entry.sr")
+#define TEST_SOCKETROUNDABOUT_3_PULLING     (@"S2Test_3_pulling.sr")
+#define TEST_SOCKETROUNDABOUT_4_COMPILE_READY (@"S2Test_4_compile_ready.sr")
+#define TEST_SOCKETROUNDABOUT_5_COMPILE_START   (@"S2Test_5_compile_start.sr")
 
 #define TEST_GLOBAL_SR_PATH     (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
 #define TEST_GLOBAL_NNOTIF      (@"/Users/mondogrosso/Desktop/S2/S2/testResources/nnotif")
@@ -54,8 +61,6 @@
     [super setUp];
     messenger = [[KSMessenger alloc]initWithBodyID:self withSelector:@selector(receiver:) withName:TEST_MASTER];
     m_flags = [[NSMutableArray alloc]init];
-    
-    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY}];
 }
 
 - (void)tearDown {
@@ -142,27 +147,24 @@
 /**
  Launchまでのチェック
  */
-//- (void) testLaunch {
-//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_LAUNCH];
-//    
-//    /**
-//     起動したタイミングで、なにが起こっていてほしいか
-//     ・リソースが葬ってある
-//     */
-//    
-//    while (![m_flags containsObject:TEST_FLAG_S2_LAUNCHED]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //起動シグナルの受け取り完了
-//    [currentTask terminate];
-//}
+- (void) testLaunch {
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_0}];
+    
+    /**
+     起動したタイミングで、なにが起こっていてほしいか
+     ・リソースが葬ってある
+     */
+    
+    STAssertTrue([m_flags containsObject:TEST_FLAG_S2_LAUNCHED], @"not contained");
+}
 
 /**
  着火までのチェック
  */
 - (void) testIgnite {
-    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_IGNITE];
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_1}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_1_IGNITE];
     
     while (![m_flags containsObject:TEST_FLAG_S2_IGNITED]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
@@ -176,7 +178,9 @@
  着火後、entryを行う
  */
 - (void) testEntry {
-    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_2}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_2_ENTRY];
     
     //entryがあったらOK
     while (![m_flags containsObject:TEST_FLAG_S2_USER_ENTRIED]) {
@@ -190,56 +194,61 @@
 /**
  着火後 ソース取得までをチェック
  */
-//- (void) testPulling {
-//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
-//    
-//    //updateが一つでもあったらOK
-//    while (![m_flags containsObject:TEST_FLAG_S2_UPDATED]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //updateシグナルの受け取り完了
-//    [currentTask terminate];
-//}
+- (void) testPulling {
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_3}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_3_PULLING];
+    
+    //updateが一つでもあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_UPDATED]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //updateシグナルの受け取り完了
+    [currentTask terminate];
+}
 
 
 /**
  予定されているpullが終わったタイミングでのupdate完了=pulledAllな動作をチェックする
  */
-//- (void) testPullingOver {
-//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
-//    
-//    //pulled_overがあったらOK
-//    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //updateシグナルの受け取り完了
-//    [currentTask terminate];
-//}
+- (void) testPullingOver {
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_4}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_4_COMPILE_READY];
+    
+    //pulled_overがあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //updateシグナルの受け取り完了
+    [currentTask terminate];
+}
 
 /**
  pull完了からコンパイル開始まで
  */
-//- (void) testPullingOverThenStartFirstCompilation {
-//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
-//    
-//    //pulled_overがあったらOK
-//    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //SRへと、ダミーのコンパイルシグナルを出す
-//    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
-//    
-//    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//
-//    
-//    //updateシグナルの受け取り完了
-//    [currentTask terminate];
-//}
+- (void) testPullingOverThenStartFirstCompilation {
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_5}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_5_COMPILE_START];
+    
+    //pulled_overがあったらOK
+    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //SRへと、ダミーのコンパイルシグナルを出す
+    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
+    
+    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //updateシグナルの受け取り完了
+    [currentTask terminate];
+}
 
 /**
  動作中のS2停止

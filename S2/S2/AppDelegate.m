@@ -272,7 +272,7 @@
     [self generateFiles:m_codeDict];
     
     //特定のファイルのScalaをコンパイルする
-    [self compileScalaAt:@"/Users/mondogrosso/Desktop/HelloWorld/build.gradle"];
+    [self compileScalaAt:currentCompileBasePath];
 }
 
 - (void) compileScalaAt:(NSString * )compileBasePath {

@@ -6,11 +6,12 @@
 id:FromUser type:0 destination:ws://127.0.0.1:8824
 
 //STからのOutを受けてnnotifdへと中継、S2を実行させる
-id:ToS2 type:1 destination:TEST_S2KEY_IDENTITY option:outputKey:S2_KEY_2013_05_24_12_10_09
+id:ToS2 type:1 destination:TEST_S2KEY_IDENTITY_0 option:outputKey:S2_KEY_2013_05_24_12_10_09
 
 connect:FromUser to:ToS2
 
 //このへんでS2が動く
+
 
 //ここから、クライアント部分の設定に入る
 
@@ -25,6 +26,3 @@ id:SRToS2 type:0 destination:ws://127.0.0.1:8824 option:websocketas:client
 //接続 ST<->S2
 connect:WSToSTSS to:SRToS2
 connect:SRToS2 to:WSToSTSS
-
-//接続完了後、STからS2起動のemit = -igniteを行う。
-emitfile:/Users/mondogrosso/Desktop/S2/S2/testResources/testIgnite.txt to:WSToSTSS

@@ -1,17 +1,15 @@
 //S2のクライアント側の設定。
+
 //ST->SSからのメッセージを、SRで受けるためのClient
 id:WSToSTSS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
 
-emit:ss@showAtLog:{"message":"ST-SR-connected."}->showStatusMessage:{"message":"ST-SR-connected."} to:WSToSTSS
+emit:ss@showAtLog:{"message":"ST&SR-connected."}->showStatusMessage:{"message":"ST&SR-connected."} to:WSToSTSS
 
-
-//現在のSTで展開中のファイルを基準点にセット(ST2の場合非同期、、、アキレス腱になりうる)
-emit:ss@setWindowBasePath:{} to:WSToSTSS
 
 //serveしたものを、S2へと送付するconnection
 id:SRToS2 type:0 destination:ws://36.244.186.217:80 option:websocketas:client
 
-emit:ss@showAtLog:{"message":"SR-S2-connected."}->showStatusMessage:{"message":"SR-S2-connected."} to:WSToSTSS
+emit:ss@showAtLog:{"message":"SR&S2-connected."}->showStatusMessage:{"message":"SR&S2-connected."} to:WSToSTSS
 
 //接続 ST<->S2
 connect:WSToSTSS to:SRToS2
@@ -19,8 +17,6 @@ connect:SRToS2 to:WSToSTSS
 
 emit:ss@showAtLog:{"message":"S2-ready."}->showStatusMessage:{"message":"S2-ready."} to:WSToSTSS
 
-//フィルタの読み込み
+//フィルタのセット、S2の着火
 emitfile:/Users/mondogrosso/Desktop/S2/tool/ScalaFilter.txt to:WSToSTSS
 
-//設定の完了
-emitfile:/Users/mondogrosso/Desktop/S2/tool/S2_reset.txt to:WSToSTSS

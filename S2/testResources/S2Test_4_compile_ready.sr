@@ -1,0 +1,48 @@
+//コンパイル開始まで
+
+//外部からのInを受けるWebSocketServer
+id:FromUser type:0 destination:ws://127.0.0.1:8824
+
+//STからのOutを受けてnnotifdへと中継、S2を実行させる
+id:ToS2 type:1 destination:TEST_S2KEY_IDENTITY_4 option:outputKey:S2_KEY_2013_05_24_12_10_09
+
+connect:FromUser to:ToS2
+
+//S2からSTへののリクエスト経路
+id:FromS2_request type:1 destination:FROMS2_IDENTITY
+
+connect:ToS2 to:FromS2_request
+
+//FromS2_requestをFromUserに直結
+connect:FromS2_request to:FromUser
+
+
+
+//ここから、クライアント部分の設定に入る
+
+
+//注入口を使って、SR->S2Serverへとcompileを促すルートを足す
+id:DummyToWS type:1 destination:DUMMY_NOTIF
+
+//S2のクライアント側の設定。
+//ST->SSからのメッセージを、SRで受けるためのClient
+id:WSToSTSS type:0 destination:ws://127.0.0.1:8823 option:websocketas:client
+
+//serveしたものを、S2へと送付するconnection
+id:SRToS2 type:0 destination:ws://127.0.0.1:8824 option:websocketas:client
+
+//ダミーの入力ラインをS2へとつながるラインに直結
+connect:DummyToWS to:SRToS2
+
+//接続 ST<->S2
+connect:WSToSTSS to:SRToS2
+connect:SRToS2 to:WSToSTSS
+
+emit:hereComes to:WSToSTSS
+
+//接続完了後、STからS2起動のemit = -igniteを行う。
+emitfile:/Users/mondogrosso/Desktop/S2/S2/testResources/testCompile.txt to:WSToSTSS
+
+//このへんでSTへとpullが来てる筈
+
+//テストからDUMMY_NOTIF経由でコンパイルを送り込む
