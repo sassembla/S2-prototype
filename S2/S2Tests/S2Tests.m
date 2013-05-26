@@ -190,56 +190,56 @@
 /**
  着火後 ソース取得までをチェック
  */
-- (void) testPulling {
-    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
-    
-    //updateが一つでもあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_UPDATED]) {
-        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-    }
-    
-    //updateシグナルの受け取り完了
-    [currentTask terminate];
-}
+//- (void) testPulling {
+//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
+//    
+//    //updateが一つでもあったらOK
+//    while (![m_flags containsObject:TEST_FLAG_S2_UPDATED]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //updateシグナルの受け取り完了
+//    [currentTask terminate];
+//}
 
 
 /**
  予定されているpullが終わったタイミングでのupdate完了=pulledAllな動作をチェックする
  */
-- (void) testPullingOver {
-    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
-    
-    //pulled_overがあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
-        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-    }
-    
-    //updateシグナルの受け取り完了
-    [currentTask terminate];
-}
+//- (void) testPullingOver {
+//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_ENTRY];
+//    
+//    //pulled_overがあったらOK
+//    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //updateシグナルの受け取り完了
+//    [currentTask terminate];
+//}
 
 /**
  pull完了からコンパイル開始まで
  */
-- (void) testPullingOverThenStartFirstCompilation {
-    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
-    
-    //pulled_overがあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
-        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-    }
-    
-    //SRへと、ダミーのコンパイルシグナルを出す
-    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
-    
-    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
-        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-    }
-
-    
-    //updateシグナルの受け取り完了
-    [currentTask terminate];
-}
+//- (void) testPullingOverThenStartFirstCompilation {
+//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_COMPILE_READY];
+//    
+//    //pulled_overがあったらOK
+//    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //SRへと、ダミーのコンパイルシグナルを出す
+//    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
+//    
+//    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//
+//    
+//    //updateシグナルの受け取り完了
+//    [currentTask terminate];
+//}
 
 /**
  動作中のS2停止

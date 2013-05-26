@@ -96,20 +96,7 @@
         
         //update -update:path sourcecode
         if ([head hasPrefix:KEY_UPDATE]) {
-            [self callParent:S2_EXEC_UPDATED];
-            
-            NSString * path = [head componentsSeparatedByString:@":"][1];
-            NSString * source = [execs substringFromIndex:([head length]+1)];
-            
-            //update code
-            [m_codeDict setValue:source forKey:path];
-            
-            [m_pulling removeObject:path];
-            
-            //途中でソースコードが増えたりした場合には無効な通知
-            if ([m_pulling count] == 0) {
-                [self callParent:S2_EXEC_PULLED_ALL];   
-            }
+            [self update:[head componentsSeparatedByString:@":"][1] withSource:body];
         }
         
         
@@ -209,6 +196,21 @@
     
     [self callParent:S2_EXEC_PULLING];
     return sourcePath;
+}
+
+- (void) update:(NSString * )path withSource:(NSString * )source {
+    [self callParent:S2_EXEC_UPDATED];
+    
+    //update code
+    [m_codeDict setValue:source forKey:path];
+    
+    [m_pulling removeObject:path];
+    
+    //途中でソースコードが増えたりした場合には無効な通知
+    if ([m_pulling count] == 0) {
+        [self callParent:S2_EXEC_PULLED_ALL];
+    }
+
 }
 
 /**
