@@ -1,1 +1,0 @@
-nn@ -e nn:["/usr/local/bin/sbt", "compile", "|", "/Users/mondogrosso/Desktop/S2/tool/nnotif", "-t", "GRADLENOTIFY_IDENTITY", "--ignorebl", "-o", "/Users/mondogrosso/Desktop/S2/tool/nnotif.log"]

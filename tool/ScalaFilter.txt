@@ -144,8 +144,3 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
         }
     ]
 }
-->点火/monocastMessage:
-{
-    "target": "S2Client",
-    "message": "-ignite"
-}
