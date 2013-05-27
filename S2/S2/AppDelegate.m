@@ -101,19 +101,7 @@
         
         
         if ([head isEqualToString:KEY_COMPILE] || [head isEqualToString:KEY_COMPILE_DUMMY]) {
-            //すでにコンパイル中であったら即停止
-            [self reset];
-            
-            if (body) {
-                [self compile:body];
-            } else {
-                NSString * compileId = [KSMessenger generateMID];
-                [self callParent:S2_EXEC_COMPILE_INFOREQUST];
-                NSString * entryRequestMessage = [[NSString alloc] initWithFormat:@"ss@getAllFilePath:{\"anchor\":\"build.gradle\",\"header\":\"-compile \"}->(paths|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\"}->showAtLog:{\"message\":\"entry:%@\"}->showStatusMessage:{\"message\":\"entry:%@\"}", compileId, compileId];
-                
-                [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":entryRequestMessage} deliverImmediately:YES];
-            }
-            
+            [self compile:body];
         }
 
         
@@ -216,30 +204,55 @@
 /**
  コンパイル
  */
-- (void) compile:(NSString * )execs {
+- (void) compile:(NSString * )body {
+    
+    //すでにコンパイル中であったら即停止
+    [self reset];
+    
+    if (body) {
+        NSLog(@"compile start");
+    } else {
+        NSLog(@"compile loading");
+        NSString * compileId = [KSMessenger generateMID];
+        [self callParent:S2_EXEC_COMPILE_INFOREQUST];
+        NSString * entryRequestMessage = [[NSString alloc] initWithFormat:@"ss@getAllFilePath:{\"anchor\":\"build.gradle\",\"header\":\"-compile \"}->(paths|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\"}->showAtLog:{\"message\":\"compile push:%@\"}->showStatusMessage:{\"message\":\"entry:%@\"}", compileId, compileId];
+        
+        [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":entryRequestMessage} deliverImmediately:YES];
+        return;
+    }
+
+    
     [self callParent:S2_EXEC_COMPILE_READY];
-    NSArray * latestPathsArray = [execs componentsSeparatedByString:@","];
+    NSArray * latestPathsArray = [body componentsSeparatedByString:@","];
     
     //limit valid path by extension
     NSArray * validExtensions = @[@"scala", @"gradle"];
     
-    bool isValid = false;
     
     NSMutableArray * validPathsArray = [[NSMutableArray alloc]init];
+    NSString * currentCompileBasePath;
     for (NSString * path in latestPathsArray) {
         NSString * extension = [path pathExtension];
         if ([validExtensions containsObject:extension]) {
             [validPathsArray addObject:path];
-            if ([extension isEqualToString:@"gradle"]) isValid = true;
+            if ([[path lastPathComponent] isEqualToString:@"build.gradle"]) {
+                currentCompileBasePath = [[NSString alloc]initWithString:path];
+            }
         }
     }
+
     
-    if (!isValid) {
+    if (currentCompileBasePath) {
+     
+    } else {
         [self callParent:S2_EXEC_COMPILE_CANCELLED];
+        NSLog(@"compile cancelled, no anchor");
         return;
     }
+
+    NSLog(@"compile start1");
     
-    //ためしにみな消す
+    //物理レイヤーの物をためしにみな消す
     [self removeFilesAtWorkPath];
     
     //合致するもの以外を消す
@@ -249,25 +262,17 @@
             
         } else {
             [m_codeDict removeObjectForKey:path];
-            
         }
     }
     
-    NSString * currentCompileBasePath;
+
     //build.gradleを探し出す
     for (NSString * path in validPathsArray) {
         if ([[path lastPathComponent] isEqualToString:@"build.gradle"]) {
             currentCompileBasePath = [[NSString alloc]initWithString:path];
         }
     }
-    
-    if (currentCompileBasePath) {
         
-    } else {
-        NSLog(@"build.gradleが含まれていない");
-        return;
-    }
-    
     //特定のフォルダに吐く
     [self generateFiles:m_codeDict];
     
@@ -277,6 +282,7 @@
 
 - (void) compileScalaAt:(NSString * )compileBasePath {
     [self callParent:S2_EXEC_COMPILE_START];
+    NSLog(@"compile!");
     
     NSArray * currentParams = @[@"--daemon", @"-b", compileBasePath, @"build", @"-i"];
     NSTask * compileTask = [[NSTask alloc]init];
@@ -289,8 +295,9 @@
     [compileTask setStandardOutput:currentOut];
     
     NSTask * nnotifTask = [[NSTask alloc]init];
+    
     [nnotifTask setLaunchPath:@"/Users/mondogrosso/Desktop/S2/tool/nnotif"];
-    [nnotifTask setArguments:@[@"-t", @"GRADLENOTIFY_IDENTITY", @"--ignorebl"]];
+    [nnotifTask setArguments:@[@"-t", @"S2_OUT", @"--ignorebl"]];
     
     [nnotifTask setStandardInput:currentOut];
     
@@ -299,6 +306,7 @@
     
     [m_tasks addObject:compileTask];
     [m_tasks addObject:nnotifTask];
+    NSLog(@"compile! task start");
 }
 
 
@@ -351,6 +359,12 @@
         
         //ファイル生成
         bool result = [fMan createFileAtPath:targetPath contents:[pathAndSources[path] dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
+
+        if (result) {
+            NSLog(@"generated:%@", targetPath);
+        } else {
+            NSLog(@"fail to generate:%@", targetPath);
+        }
         
         NSFileHandle * writeHandle = [NSFileHandle fileHandleForUpdatingAtPath:path];
         [writeHandle writeData:[pathAndSources[path] dataUsingEncoding:NSUTF8StringEncoding]];

@@ -125,8 +125,9 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
     "interval": 1000,
     "selectors": [
         {
-            "runSetting": {
-                "path": "/Users/mondogrosso/Desktop/S2/tool/S2_compilation.txt"
+            "monocastMessage": {
+                "target": "S2Client",
+                "message": "-compile"
             }
         }
     ]
@@ -138,9 +139,15 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
     "interval": 100,
     "selectors": [
         {
-            "runSetting": {
-                "path": "/Users/mondogrosso/Desktop/S2/tool/S2_compilation.txt"
+            "monocastMessage": {
+                "target": "S2Client",
+                "message": "-compile"
             }
         }
     ]
+}
+->点火/monocastMessage:
+{
+    "target": "S2Client",
+    "message": "-ignite"
 }
