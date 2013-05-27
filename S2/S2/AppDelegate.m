@@ -162,8 +162,7 @@
         NSString * suffix = [path pathExtension];
 
         if ([targettedSuffixArray containsObject:suffix]) {
-            [m_codeDict setValue:@"" forKey:path];
-            [m_pulling addObject:[self emitPull:path withIdentity:path]];
+            [self pullClientCode:path];
         }
     }
     
@@ -280,8 +279,7 @@
     if (0 < [latestListSet count]) {
         [self callParent:S2_EXEC_COMPILE_POSTPONED_BY_PULL];
         for (NSString * path in latestListSet) {
-            [m_codeDict setValue:@"" forKey:path];
-            [m_pulling addObject:[self emitPull:path withIdentity:path]];
+            [self pullClientCode:path];
         }
         return;
     }
@@ -399,6 +397,28 @@
         [currentTask terminate];
     }
     
+}
+
+/**
+ 対象のファイルを、クライアント側から取得する
+ */
+- (void) pullClientCode:(NSString * )path {
+    [m_codeDict setValue:@"" forKey:path];
+    [m_pulling addObject:[self emitPull:path withIdentity:path]];
+}
+
+/**
+ workPathから、現在出力されている特定名称のファイルの内容を取り出す
+ */
+- (NSString * )cachedFile:(NSString * )path {
+    NSAssert(m_codeDict[path], @"not contained in cache:%@      maybe not yet compiled", path);
+    NSString * targetPath = [NSString stringWithFormat:@"%@%@", [self currentWorkPath], path];
+
+    NSFileHandle * handle = [NSFileHandle fileHandleForReadingAtPath:targetPath];
+    NSAssert(handle, @"handle is nil");
+    
+    NSData * data = [handle readDataToEndOfFile];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 

@@ -76,5 +76,8 @@ typedef enum {
 - (id) initWithArgs:(NSDictionary * )dict;
 - (void) writeLogLine:(NSString * )message;
 
+- (void) pullClientCode:(NSString * )path;
+- (NSString * )cachedFile:(NSString * )path;
+
 - (void) close;
 @end

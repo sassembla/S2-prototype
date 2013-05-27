@@ -27,6 +27,7 @@
 #define TEST_S2KEY_IDENTITY_4   (@"TEST_S2KEY_IDENTITY_4")
 #define TEST_S2KEY_IDENTITY_5   (@"TEST_S2KEY_IDENTITY_5")
 #define TEST_S2KEY_IDENTITY_6   (@"TEST_S2KEY_IDENTITY_6")
+#define TEST_S2KEY_IDENTITY_7   (@"TEST_S2KEY_IDENTITY_7")
 
 #define TEST_OUTPUT (@"./s2.log")
 
@@ -39,6 +40,7 @@
 #define TEST_SOCKETROUNDABOUT_4_COMPILE_READY (@"S2Test_4_compile_ready.sr")
 #define TEST_SOCKETROUNDABOUT_5_COMPILE_START   (@"S2Test_5_compile_start.sr")
 #define TEST_SOCKETROUNDABOUT_6_PULL_BEFORE_COMPILE (@"S2Test_6_pull_before_compile.sr")
+#define TEST_SOCKETROUNDABOUT_7_COMPILECHECK    (@"S2Test_7_compile_check.sr")
 
 #define TEST_GLOBAL_SR_PATH     (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
 #define TEST_GLOBAL_NNOTIF      (@"/Users/mondogrosso/Desktop/S2/S2/testResources/nnotif")
@@ -211,67 +213,89 @@
 /**
  コンパイルに入る段階で道のコードが発見された場合は、pullが発生するはず
  */
-//- (void) testPullUnknownSourceWhenCompile {
-//    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_6}];
-//    
-//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_6_PULL_BEFORE_COMPILE];
-//    
-//    //pulled_overがあったらOK
-//    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_PULLED_ALL]]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //このへんで新規コードを足し、updateしないまま、SRへと、ダミーのコンパイルシグナルを出す
-//    
-//    //新規コード
-//    
-//    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
-//    
-//    //コンパイルに至る前に、そのpull発生のため遅延する旨のサインが流れる
-//    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_COMPILE_POSTPONED_BY_PULL]]) {
-//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-//    }
-//    
-//    //いらなくなったファイルを消す
-//    
-//    
-//    //updateシグナルの受け取り完了
-//    [currentTask terminate];
-//}
+- (void) testPullUnknownSourceWhenCompile {
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_6}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_6_PULL_BEFORE_COMPILE];
+    
+    //pulled_overがあったらOK
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_PULLED_ALL]]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //このへんで新規コードを足し、updateしないまま、SRへと、ダミーのコンパイルシグナルを出す
+    NSTask * generateNewFile = [[NSTask alloc] init];
+    [generateNewFile setLaunchPath:@"/bin/cp"];
+    [generateNewFile setArguments:@[@"/Users/mondogrosso/Desktop/S2/addTest.scala", @"/Users/mondogrosso/Desktop/S2/S2Target/"]];
+    [generateNewFile launch];
+    [generateNewFile waitUntilExit];
+    
+    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
+    
+    //コンパイルに至る前に、そのpull発生のため遅延する旨のサインが流れる
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_COMPILE_POSTPONED_BY_PULL]]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //いらなくなった対象ファイルを消す
+    NSTask * deleteFile = [[NSTask alloc] init];
+    [deleteFile setLaunchPath:@"/bin/rm"];
+    [deleteFile setArguments:@[@"/Users/mondogrosso/Desktop/S2/S2Target/addTest.scala"]];
+    [deleteFile launch];
+    [deleteFile waitUntilExit];
+
+    [currentTask terminate];
+}
 
 /**
  コンパイルタイミングでの、ファイルの存在状態チェック
  最新のコードがある筈
  */
-
-/**
- 動作中のS2停止
- */
-//- (void) testExit {
-////    while (![m_flags containsObject:TEST_FLAG_S2_IGNITED]) {
-////        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-////    }
-//
-////    [self run];
-//}
-
-/**
- 起動後の再起動
- */
-//- (void) testReset {
-//    
-//}
-
-
-
-//
-//- (void) testCompile {
-//    STFail(@"Unit tests are not implemented yet in S2Tests");
-//}
-//
-//- (void) testUpdate {
-//    
-//}
-
+- (void) testPullLatestSourceWhenCompile {
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_7}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_7_COMPILECHECK];
+    
+    //pulled_overがあったらOK
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_PULLED_ALL]]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //HelloWorldコードを上書きする
+    NSTask * generateNewFile = [[NSTask alloc] init];
+    [generateNewFile setLaunchPath:@"/bin/cp"];
+    [generateNewFile setArguments:@[@"/Users/mondogrosso/Desktop/S2/HelloWorld.scala2", @"/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala"]];
+    [generateNewFile launch];
+    [generateNewFile waitUntilExit];
+    
+    //S2にupdateを引き出させる
+    [appDel pullClientCode:@"/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala"];
+    
+    
+    [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    
+    
+    //コンパイル
+    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
+    
+    //コンパイルが開始される
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_COMPILE_START]]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //コンパイルのために吐き出された、コンパイルされる予定のファイルも最新になっているはず
+    NSString * cached = [appDel cachedFile:@"/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala"];
+    NSLog(@"cached %@", cached);
+    STAssertTrue([cached hasPrefix:@"object HelloWorld2"], @"not match, %@", cached);
+    
+    //対象ファイルを元に戻す
+    NSTask * revertFile = [[NSTask alloc] init];
+    [revertFile setLaunchPath:@"/bin/cp"];
+    [revertFile setArguments:@[@"/Users/mondogrosso/Desktop/S2/HelloWorld.scala_original", @"/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala"]];
+    [revertFile launch];
+    [revertFile waitUntilExit];
+    
+    [currentTask terminate];
+}
 
 @end
