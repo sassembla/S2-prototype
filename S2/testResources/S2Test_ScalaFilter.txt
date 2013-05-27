@@ -1,8 +1,8 @@
-ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。0.1.0/inputIdentity:
+ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。0.1.1/inputIdentity:
 {
     "id": "S2Client"
 }
-->defineFilter: 
+->コンパイル情報のフィルタ/defineFilter: 
 {
     "name": "scala",
     "patterns": [
@@ -83,7 +83,7 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
         }
     ]
 }
-->setReactor:
+->エラー箇所の表示/setReactor:
 {
     "target": "scala",
     "event": "on_selection_modified",
@@ -101,7 +101,7 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
         }
     ]
 }
-->setReactor:
+->エラー選択時の挙動/setReactor:
 {
     "target": "scala",
     "event": "event_errorEmitted",
@@ -118,29 +118,64 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
         }
     ]
 }
-->setReactor: 
+->バッファイベント発生時の挙動、updateとcompile/setReactor:
 {
     "target": "scala",
-    "event": "on_modified",
-    "interval": 1000,
+    "event": "ss_f_runWithBuffer",
+    "replacefromto": {
+        "body": "message",
+        "path": "header"
+    },
     "selectors": [
         {
-            "runSetting": {
-                "path": "/Users/mondogrosso/Desktop/S2/tool/S2_compilation.txt"
+            "monocastMessage": {
+                "sender": "-update",
+                "target": "S2Client",
+                "header": "replace",
+                "message": "replace",
+                "delimiter": " "
+            }
+        },
+        {
+            "monocastMessage": {
+                "target": "S2Client",
+                "message": "-compile"
             }
         }
     ]
 }
-->setReactor: 
+->コード更新時、バッファイベント発生/setReactor:
+{
+    "target": "scala",
+    "event": "on_modified",
+    "replacefromto": {
+        "view": "view"
+    },
+    "interval": 1000,
+    "selectors": [
+        {
+            "runWithBuffer": {
+                "view": "will be replace to specific view"
+            }
+        }
+    ]
+}
+->保存時のcompile/setReactor: 
 {
     "target": "scala",
     "event": "on_post_save",
     "interval": 100,
     "selectors": [
         {
-            "runSetting": {
-                "path": "/Users/mondogrosso/Desktop/S2/tool/S2_compilation.txt"
+            "monocastMessage": {
+                "target": "S2Client",
+                "message": "-compile"
             }
         }
     ]
+}
+->点火/monocastMessage:
+{
+    "target": "S2Client",
+    "message": "-ignite"
 }

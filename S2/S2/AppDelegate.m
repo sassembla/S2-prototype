@@ -245,24 +245,45 @@
     if (currentCompileBasePath) {
      
     } else {
-        [self callParent:S2_EXEC_COMPILE_CANCELLED];
+        [self callParent:S2_EXEC_COMPILE_CANCELLED_BY_MISSING_ANCHOR];
         NSLog(@"compile cancelled, no anchor");
         return;
     }
 
     NSLog(@"compile start1");
     
-    //物理レイヤーの物をためしにみな消す
-    [self removeFilesAtWorkPath];
     
     //合致するもの以外を消す
+    /*
+     b,c,d
+     c,d,e
+     e->remove
+     b->pull
+     */
     NSArray * keysList = [NSArray arrayWithArray:[m_codeDict allKeys]];
     for (NSString * path in keysList) {
+        //from memory
         if ([validPathsArray containsObject:path]) {
-            
+            //
         } else {
+            //ファイルからも消される
             [m_codeDict removeObjectForKey:path];
         }
+    }
+    
+    //memoryとlistの合致を見て、listにあってmemoryに無い物があるかどうか
+    NSSet * memorySet = [NSSet setWithArray:keysList];
+    NSMutableSet * latestListSet = [NSMutableSet setWithArray:validPathsArray];
+    
+    [latestListSet minusSet:memorySet];
+
+    if (0 < [latestListSet count]) {
+        [self callParent:S2_EXEC_COMPILE_POSTPONED_BY_PULL];
+        for (NSString * path in latestListSet) {
+            [m_codeDict setValue:@"" forKey:path];
+            [m_pulling addObject:[self emitPull:path withIdentity:path]];
+        }
+        return;
     }
     
 

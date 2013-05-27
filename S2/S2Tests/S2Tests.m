@@ -9,6 +9,10 @@
 /**
  Jenkinsからの実行を維持したいので、nnotifdの代替になるイメージ。
  nnotifdの特化版。
+ 
+ テストの前提として、
+ SublimeText + SublimeSocket 0.10.0以降
+ build.gradleがあるフォルダと同じ or 下のファイルを開いている
  */
 #import <SenTestingKit/SenTestingKit.h>
 
@@ -22,6 +26,7 @@
 #define TEST_S2KEY_IDENTITY_3   (@"TEST_S2KEY_IDENTITY_3")
 #define TEST_S2KEY_IDENTITY_4   (@"TEST_S2KEY_IDENTITY_4")
 #define TEST_S2KEY_IDENTITY_5   (@"TEST_S2KEY_IDENTITY_5")
+#define TEST_S2KEY_IDENTITY_6   (@"TEST_S2KEY_IDENTITY_6")
 
 #define TEST_OUTPUT (@"./s2.log")
 
@@ -33,19 +38,11 @@
 #define TEST_SOCKETROUNDABOUT_3_PULLING     (@"S2Test_3_pulling.sr")
 #define TEST_SOCKETROUNDABOUT_4_COMPILE_READY (@"S2Test_4_compile_ready.sr")
 #define TEST_SOCKETROUNDABOUT_5_COMPILE_START   (@"S2Test_5_compile_start.sr")
+#define TEST_SOCKETROUNDABOUT_6_PULL_BEFORE_COMPILE (@"S2Test_6_pull_before_compile.sr")
 
 #define TEST_GLOBAL_SR_PATH     (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
 #define TEST_GLOBAL_NNOTIF      (@"/Users/mondogrosso/Desktop/S2/S2/testResources/nnotif")
 
-#define TEST_FLAG_S2_LAUNCHED   (@"TEST_FLAG_S2_LAUNCHED")
-#define TEST_FLAG_S2_IGNITED    (@"TEST_FLAG_S2_IGNITED")
-#define TEST_FLAG_S2_USER_ENTRIED   (@"TEST_FLAG_S2_USER_ENTRIED")
-#define TEST_FLAG_S2_PULLING    (@"TEST_FLAG_S2_PULLING")
-#define TEST_FLAG_S2_UPDATED    (@"TEST_FLAG_S2_UPDATED")
-#define TEST_FLAG_S2_PULLED_ALL (@"TEST_FLAG_S2_PULLED_ALL")
-#define TEST_FLAG_S2_COMPILE_READY  (@"TEST_FLAG_S2_COMPILE_READY")
-#define TEST_FLAG_S2_COMPILE_START  (@"TEST_FLAG_S2_COMPILE_START")
-#define TEST_FLAG_S2_EXITED     (@"TEST_FLAG_S2_EXITED")
 @interface S2Tests : SenTestCase
 
 @end
@@ -66,7 +63,7 @@
 - (void)tearDown {
     [appDel close];
     
-    STAssertTrue([m_flags containsObject:TEST_FLAG_S2_EXITED], @"not contained, %@", m_flags);
+    STAssertTrue([m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_EXITED]], @"not contained, %@", m_flags);
     [m_flags removeAllObjects];
     
 
@@ -89,47 +86,8 @@
 
 - (void) receiver:(NSNotification * )notif {
     NSDictionary * dict = [messenger tagValueDictionaryFromNotification:notif];
-    
-    switch ([messenger execFrom:S2_MASTER viaNotification:notif]) {
-        case S2_EXEC_LAUNCHED:{
-            [m_flags addObject:TEST_FLAG_S2_LAUNCHED];
-            break;
-        }
-        case S2_EXEC_IGNITED:{
-            [m_flags addObject:TEST_FLAG_S2_IGNITED];
-            break;
-        }
-        case S2_EXEC_USER_ENTRIED:{
-            [m_flags addObject:TEST_FLAG_S2_USER_ENTRIED];
-            break;
-        }
-        case S2_EXEC_PULLING:{
-            [m_flags addObject:TEST_FLAG_S2_PULLING];
-            break;
-        }
-        case S2_EXEC_UPDATED:{
-            [m_flags addObject:TEST_FLAG_S2_UPDATED];
-            break;
-        }
-        case S2_EXEC_PULLED_ALL:{
-            [m_flags addObject:TEST_FLAG_S2_PULLED_ALL];
-            break;
-        }
-        case S2_EXEC_COMPILE_READY:{
-            [m_flags addObject:TEST_FLAG_S2_COMPILE_READY];
-            break;
-        }
-        case S2_EXEC_COMPILE_START:{
-            [m_flags addObject:TEST_FLAG_S2_COMPILE_START];
-            break;
-        }
-        case S2_EXEC_EXITED:{
-            [m_flags addObject:TEST_FLAG_S2_EXITED];
-            break;
-        }
-        default:
-            break;
-    }
+    int n = [messenger execFrom:S2_MASTER viaNotification:notif];
+    [m_flags addObject:[NSNumber numberWithInt:n]];
 }
 
 - (void) sendNotification:(NSString * )identity withMessage:(NSString * )message withKey:(NSString * )key {
@@ -155,7 +113,7 @@
      ・リソースが葬ってある
      */
     
-    STAssertTrue([m_flags containsObject:TEST_FLAG_S2_LAUNCHED], @"not contained");
+    STAssertTrue([m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_LAUNCHED]], @"not contained");
 }
 
 /**
@@ -166,7 +124,7 @@
     
     NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_1_IGNITE];
     
-    while (![m_flags containsObject:TEST_FLAG_S2_IGNITED]) {
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_IGNITED]]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
     
@@ -183,7 +141,7 @@
     NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_2_ENTRY];
     
     //entryがあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_USER_ENTRIED]) {
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_USER_ENTRIED]]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
 
@@ -200,7 +158,7 @@
     NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_3_PULLING];
     
     //updateが一つでもあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_UPDATED]) {
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_UPDATED]]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
     
@@ -218,7 +176,7 @@
     NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_4_COMPILE_READY];
     
     //pulled_overがあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_PULLED_ALL]]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
     
@@ -235,20 +193,56 @@
     NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_5_COMPILE_START];
     
     //pulled_overがあったらOK
-    while (![m_flags containsObject:TEST_FLAG_S2_PULLED_ALL]) {
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_PULLED_ALL]]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
     
     //SRへと、ダミーのコンパイルシグナルを出す
     [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
     
-    while (![m_flags containsObject:TEST_FLAG_S2_COMPILE_READY]) {
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_COMPILE_READY]]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     }
     
     //updateシグナルの受け取り完了
     [currentTask terminate];
 }
+
+/**
+ コンパイルに入る段階で道のコードが発見された場合は、pullが発生するはず
+ */
+//- (void) testPullUnknownSourceWhenCompile {
+//    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_6}];
+//    
+//    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_6_PULL_BEFORE_COMPILE];
+//    
+//    //pulled_overがあったらOK
+//    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_PULLED_ALL]]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //このへんで新規コードを足し、updateしないまま、SRへと、ダミーのコンパイルシグナルを出す
+//    
+//    //新規コード
+//    
+//    [self sendNotification:@"DUMMY_NOTIF" withMessage:KEY_COMPILE_DUMMY withKey:@""];
+//    
+//    //コンパイルに至る前に、そのpull発生のため遅延する旨のサインが流れる
+//    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_COMPILE_POSTPONED_BY_PULL]]) {
+//        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+//    }
+//    
+//    //いらなくなったファイルを消す
+//    
+//    
+//    //updateシグナルの受け取り完了
+//    [currentTask terminate];
+//}
+
+/**
+ コンパイルタイミングでの、ファイルの存在状態チェック
+ 最新のコードがある筈
+ */
 
 /**
  動作中のS2停止

@@ -4,7 +4,7 @@ S2 received:{
     messageCount = 1;
 }
 S2 received:{
-    "S2_KEY_2013_05_24_12_10_09" = "-entry /Users/mondogrosso/Desktop/S2/S2target/build.gradle,/Users/mondogrosso/Desktop/S2/S2target/build.sbt,/Users/mondogrosso/Desktop/S2/S2target/src/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala";
+    "S2_KEY_2013_05_24_12_10_09" = "-entry /Users/mondogrosso/Desktop/S2/S2target/build.gradle,/Users/mondogrosso/Desktop/S2/S2target/build.sbt,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/cache.properties,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/cache.properties.lock,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/fileHashes.bin,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/fileSnapshots.bin,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/outputFileStates.bin,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/taskArtifacts.bin,/Users/mondogrosso/Desktop/S2/S2target/build/classes/main/HelloWorld$.class,/Users/mondogrosso/Desktop/S2/S2target/build/classes/main/HelloWorld.class,/Users/mondogrosso/Desktop/S2/S2target/build/libs/S2target.jar,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/base-style.css,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/css3-pie-1.0beta3.htc,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/index.html,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/report.js,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/style.css,/Users/mondogrosso/Desktop/S2/S2target/build/test-results/binary/test/results.bin,/Users/mondogrosso/Desktop/S2/S2target/build/tmp/jar/MANIFEST.MF,/Users/mondogrosso/Desktop/S2/S2target/src/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala";
     messageCount = 2;
 }
 S2 received:{
@@ -12,22 +12,14 @@ S2 received:{
     messageCount = 3;
 }
 S2 received:{
-    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdef main(args: Array[String]) = println(\"Hi!\")\n\n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}";
+    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala object HelloWorld {\n\t\n\tdaef main(args: Array[String]) = println(\"Hi!\")\n \n\tprintln(\"hereComes\")\n\tval sda = 100\n\tval a = \"a\"\n}}";
     messageCount = 4;
 }
 S2 received:{
-    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala no-data, maybe path does not exist.";
+    "S2_KEY_2013_05_24_12_10_09" = "S2-compile";
     messageCount = 5;
 }
 S2 received:{
-    "S2_KEY_2013_05_24_12_10_09" = "-update:/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala no-data, maybe path does not exist.";
+    "S2_KEY_2013_05_24_12_10_09" = "-compile /Users/mondogrosso/Desktop/S2/S2target/build.gradle,/Users/mondogrosso/Desktop/S2/S2target/build.sbt,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/cache.properties,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/cache.properties.lock,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/fileHashes.bin,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/fileSnapshots.bin,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/outputFileStates.bin,/Users/mondogrosso/Desktop/S2/S2target/.gradle/1.6/taskArtifacts/taskArtifacts.bin,/Users/mondogrosso/Desktop/S2/S2target/build/classes/main/HelloWorld$.class,/Users/mondogrosso/Desktop/S2/S2target/build/classes/main/HelloWorld.class,/Users/mondogrosso/Desktop/S2/S2target/build/libs/S2target.jar,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/base-style.css,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/css3-pie-1.0beta3.htc,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/index.html,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/report.js,/Users/mondogrosso/Desktop/S2/S2target/build/reports/tests/style.css,/Users/mondogrosso/Desktop/S2/S2target/build/test-results/binary/test/results.bin,/Users/mondogrosso/Desktop/S2/S2target/build/tmp/jar/MANIFEST.MF,/Users/mondogrosso/Desktop/S2/S2target/src/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala";
     messageCount = 6;
-}
-S2 received:{
-    "S2_KEY_2013_05_24_12_10_09" = "S2-compile";
-    messageCount = 7;
-}
-S2 received:{
-    "S2_KEY_2013_05_24_12_10_09" = "-compile /Users/mondogrosso/Desktop/S2/S2target/build.gradle,/Users/mondogrosso/Desktop/S2/S2target/build.sbt,/Users/mondogrosso/Desktop/S2/S2target/src/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/.DS_Store,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/s.scala,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/t.scala";
-    messageCount = 8;
 }
