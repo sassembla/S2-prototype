@@ -90,7 +90,7 @@
                 if (targetArray) {
                     [m_tasks removeObject:targetArray];
                 }
-                
+                [self writeLogLine:@"over"];
                 [self callParent:S2_EXEC_COMPILE_FINISHED];
             }
             
