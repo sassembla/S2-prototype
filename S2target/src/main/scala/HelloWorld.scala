@@ -7,7 +7,10 @@ object HelloWorld {
 	println("hereComes")
 	val sda = 100
 	val a = "a";
-	
+}
+
+class s {
+	val s2 = ""
 }
 
 
