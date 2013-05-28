@@ -6,23 +6,21 @@ id:FromUser type:0 destination:ws://127.0.0.1:8824
 //STからのOutを受けてnnotifdへと中継、S2を実行させる
 id:ToS2 type:1 destination:S2 option:outputKey:S2_KEY_2013_05_24_12_10_09
 
-//外部からS2への接続
 connect:FromUser to:ToS2
 
-//S2からSTへのリクエスト経路
+//S2からSTへののリクエスト経路
 id:FromS2_request type:1 destination:FROMS2_IDENTITY
 
-//S2からSTへと接続
 connect:ToS2 to:FromS2_request
 
 //FromS2_requestをFromUserに直結
 connect:FromS2_request to:FromUser
 
-//コンパイル結果の受け口
-id:FromS2 type:1 destination:GRADLENOTIFY_IDENTITY
+//S2からのコンパイル出力をFromUserへと届ける経路
+id:FromS2_compile type:1 destination:S2_OUT
 
-//S2からのコンパイル結果出力をSTへ
-connect:FromS2 to:FromUser
+//S2->ST
+connect:FromS2_compile to:FromUser
 
 //S2からSTへのコンパイル結果出力フィルタ
-trans:FromS2 to:FromUser prefix:ss@filtering:{"name":"scala","source":" postfix:"}
+trans:FromS2_compile to:FromUser prefix:ss@filtering:{"name":"scala","source":" postfix:"}
