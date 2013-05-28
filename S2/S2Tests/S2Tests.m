@@ -28,6 +28,7 @@
 #define TEST_S2KEY_IDENTITY_5   (@"TEST_S2KEY_IDENTITY_5")
 #define TEST_S2KEY_IDENTITY_6   (@"TEST_S2KEY_IDENTITY_6")
 #define TEST_S2KEY_IDENTITY_7   (@"TEST_S2KEY_IDENTITY_7")
+#define TEST_S2KEY_IDENTITY_8   (@"TEST_S2KEY_IDENTITY_8")
 
 #define TEST_OUTPUT (@"./s2.log")
 
@@ -41,6 +42,7 @@
 #define TEST_SOCKETROUNDABOUT_5_COMPILE_START   (@"S2Test_5_compile_start.sr")
 #define TEST_SOCKETROUNDABOUT_6_PULL_BEFORE_COMPILE (@"S2Test_6_pull_before_compile.sr")
 #define TEST_SOCKETROUNDABOUT_7_COMPILECHECK    (@"S2Test_7_compile_check.sr")
+#define TEST_SOCKETROUNDABOUT_8_EXECUTECHECK    (@"S2Test_8_execute.sr")
 
 #define TEST_GLOBAL_SR_PATH     (@"/Users/mondogrosso/Desktop/S2/S2/testResources/SocketRoundabout")
 #define TEST_GLOBAL_NNOTIF      (@"/Users/mondogrosso/Desktop/S2/S2/testResources/nnotif")
@@ -294,6 +296,26 @@
     [revertFile setArguments:@[@"/Users/mondogrosso/Desktop/S2/HelloWorld.scala_original", @"/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala"]];
     [revertFile launch];
     [revertFile waitUntilExit];
+    
+    [currentTask terminate];
+}
+
+/**
+ 端的な実行シーケンスのテスト
+ */
+- (void) testExecute {
+    appDel = [[AppDelegate alloc]initWithArgs:@{KEY_PARENT:[messenger myNameAndMID], KEY_OUTPUT:TEST_OUTPUT, KEY_IDENTITY:TEST_S2KEY_IDENTITY_8}];
+    
+    NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_8_EXECUTECHECK];
+    
+    //コンパイルが完了する
+    while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_COMPILE_FINISHED]]) {
+        [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    
+    //この時点で、taskは空な筈
+    NSArray * tasks = [appDel currentTasks];
+    STAssertTrue([tasks count] == 0, @"mot match, %d", [tasks count]);
     
     [currentTask terminate];
 }

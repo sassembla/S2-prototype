@@ -66,6 +66,43 @@
     return self;
 }
 
+
+- (void) receiver:(NSNotification * )notif {
+    NSDictionary * dict = [messenger tagValueDictionaryFromNotification:notif];
+    
+    switch ([messenger execFrom:[messenger myName] viaNotification:notif]) {
+        case S2_COMPILING:{
+            NSAssert(dict[@"process"], @"process required");
+            NSTask * task = dict[@"process"];
+            
+            if ([task isRunning]) {
+                [messenger callMyself:S2_COMPILING,
+                 [messenger tag:@"process" val:task],
+                 [messenger withDelay:CHECK_INTERVAL],
+                 nil];
+            } else {
+                NSArray * targetArray;
+                for (NSArray * taskArray in m_tasks) {
+                    if ([taskArray containsObject:task]) {
+                        targetArray = taskArray;
+                    }
+                }
+                if (targetArray) {
+                    [m_tasks removeObject:targetArray];
+                }
+                
+                [self callParent:S2_EXEC_COMPILE_FINISHED];
+            }
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+
 - (void) distNotifReceiver:(NSNotification * )notif {
     NSDictionary * dict = [notif userInfo];
     NSLog(@"distNotifReceiver dict%@", dict);
@@ -89,7 +126,7 @@
             [self ignite];
         }
         
-        //entry -entry:paths
+        //entry -entry paths
         if ([head isEqualToString:KEY_ENTRY]) {
             [self entry:body];
         }
@@ -104,7 +141,10 @@
             [self compile:body];
         }
 
-        
+        if ([head isEqualToString:KEY_EXECUTE]) {
+            [self execute:body];
+            [self callParent:S2_EXEC_EXECUTE];
+        }
         
         if ([head isEqualToString:KEY_RESTART]) {
             
@@ -337,8 +377,15 @@
     [compileTask launch];
     [nnotifTask launch];
     
-    [m_tasks addObject:compileTask];
-    [m_tasks addObject:nnotifTask];
+    NSArray * taskArray = @[compileTask, nnotifTask];
+    
+    [m_tasks addObject:taskArray];
+    
+    [messenger callMyself:S2_COMPILING,
+     [messenger tag:@"process" val:compileTask],
+     [messenger withDelay:CHECK_INTERVAL],
+     nil];
+    
     NSLog(@"compile! task start");
 }
 
@@ -346,6 +393,26 @@
 
 
 
+/**
+ パスを受け取り、そのファイルを直接ワークスペースにコピーしてきて、コンパイルを実行する
+ */
+- (void) execute:(NSString * )paths {
+    NSArray * pathsArray = [paths componentsSeparatedByString:@","];
+    
+    //読む
+    for (NSString * path in pathsArray) {
+        NSFileHandle * handle = [NSFileHandle fileHandleForReadingAtPath:path];
+        NSData * data = [handle readDataToEndOfFile];
+        NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [m_codeDict setValue:string forKey:path];
+    }
+    
+    //codeDictが完成したので、コンパイルに入る
+    [self generateFiles:m_codeDict];
+    
+    //ビルド
+    [self compileScalaAt:m_codeDict];
+}
 
 
 
@@ -409,10 +476,11 @@
 
 - (void) reset {
     //既存タスクを削除
-    for (NSTask * currentTask in m_tasks) {
-        [currentTask terminate];
+    for (NSArray * currentTaskArray in m_tasks) {
+        for (NSTask * currentTask in currentTaskArray) {
+            [currentTask terminate];
+        }
     }
-    
 }
 
 /**
@@ -437,6 +505,9 @@
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
+- (NSArray * ) currentTasks {
+    return [NSArray arrayWithArray:m_tasks];
+}
 
 /**
  output

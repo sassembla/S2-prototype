@@ -28,8 +28,15 @@ typedef enum {
     S2_EXEC_COMPILE_POSTPONED_BY_PULL,
     S2_EXEC_COMPILE_CANCELLED_BY_MISSING_ANCHOR,
     S2_EXEC_COMPILE_START,
-    S2_EXEC_EXITED
+    S2_EXEC_COMPILE_FINISHED,
+    S2_EXEC_EXECUTE,
+    S2_EXEC_EXITED,
+    
+    
+    S2_COMPILING
 } S2_EXECS;
+
+#define CHECK_INTERVAL  (0.001)
 
 
 typedef enum {
@@ -38,7 +45,7 @@ typedef enum {
 } S2_status;
 
 
-#define VERSION (@"0.0.1")
+#define VERSION (@"0.1.1")
 
 #define KEY_VERSION     (@"-v")
 #define KEY_PARENT      (@"-parent")
@@ -54,6 +61,7 @@ typedef enum {
 #define KEY_UPDATE      (@"-update")
 #define KEY_COMPILE     (@"-compile")
 #define KEY_COMPILE_DUMMY   (@"S2-compile")
+#define KEY_EXECUTE     (@"-execute")
 #define KEY_RESTART     (@"-restart")
 
 
@@ -78,6 +86,8 @@ typedef enum {
 
 - (void) pullClientCode:(NSString * )path;
 - (NSString * )cachedFile:(NSString * )path;
+
+- (NSArray * )currentTasks;
 
 - (void) close;
 @end
