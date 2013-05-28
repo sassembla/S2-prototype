@@ -1,26 +1,10 @@
 //S2のサーバ
 
-//外部からのInを受けるWebSocketServer
-id:FromUser type:0 destination:ws://127.0.0.1:8824
-
-//STからのOutを受けてnnotifdへと中継、S2を実行させる
+//S2への接続経路
 id:ToS2 type:1 destination:S2 option:outputKey:S2_KEY_2013_05_24_12_10_09
 
-connect:FromUser to:ToS2
-
-//S2からSTへののリクエスト経路
-id:FromS2_request type:1 destination:FROMS2_IDENTITY
-
-connect:ToS2 to:FromS2_request
-
-//FromS2_requestをFromUserに直結
-connect:FromS2_request to:FromUser
-
-//S2からのコンパイル出力をFromUserへと届ける経路
-id:FromS2_compile type:1 destination:S2_OUT
-
-//S2->ST
-connect:FromS2_compile to:FromUser
-
-//S2からSTへのコンパイル結果出力フィルタ
-trans:FromS2_compile to:FromUser prefix:ss@filtering:{"name":"scala","source":" postfix:"}
+//S2へとコンパイル動作の開始を伝える
+//成立してほしい動作は、コンパイルが開始され、そのコンパイル結果のログを出力、終了を検知する事。
+//なので、-igniteと-entryと-compileを同時に行う必要がある。終わったら死ぬ。
+//-execute
+emitfile:here.txt to:ToS2
