@@ -284,22 +284,36 @@
         return;
     }
     
+        
+    //特定のフォルダに吐く
+    [self generateFiles:m_codeDict];
 
+    NSLog(@"currentCompileBasePath %@", currentCompileBasePath);
+    //特定のファイルのScalaをコンパイルする
+    [self compileScalaAt:m_codeDict];
+}
+
+/**
+ Gradleでのコンパイル
+ */
+- (void) compileScalaAt:(NSDictionary * )codeDict {
+    
+    NSString * currentCompileBasePath;
     //build.gradleを探し出す
-    for (NSString * path in validPathsArray) {
+    for (NSString * path in [codeDict allKeys]) {
         if ([[path lastPathComponent] isEqualToString:@"build.gradle"]) {
             currentCompileBasePath = [[NSString alloc]initWithString:path];
         }
     }
-        
-    //特定のフォルダに吐く
-    [self generateFiles:m_codeDict];
     
-    //特定のファイルのScalaをコンパイルする
-    [self compileScalaAt:currentCompileBasePath];
-}
-
-- (void) compileScalaAt:(NSString * )compileBasePath {
+    if (currentCompileBasePath) {
+        
+    } else {
+        return;
+    }
+    
+    NSString * compileBasePath = [NSString stringWithFormat:@"%@%@", [self currentWorkPath], currentCompileBasePath];
+    
     [self callParent:S2_EXEC_COMPILE_START];
     NSLog(@"compile!");
     
@@ -361,13 +375,15 @@
     }
 }
 
+/**
+ ファイル作成(メモリ上のものを使う場合は不要)
+ */
 - (void) generateFiles:(NSDictionary * )pathAndSources {
     NSString * currentBuildPath = [self currentWorkPath];
     
     NSError * error;
     NSFileManager * fMan = [[NSFileManager alloc]init];
     [fMan createDirectoryAtPath:currentBuildPath withIntermediateDirectories:YES attributes:nil error:&error];
-    
     
     //ファイル出力
     NSString * targetPath;
@@ -385,7 +401,7 @@
             NSLog(@"fail to generate:%@", targetPath);
         }
         
-        NSFileHandle * writeHandle = [NSFileHandle fileHandleForUpdatingAtPath:path];
+        NSFileHandle * writeHandle = [NSFileHandle fileHandleForUpdatingAtPath:targetPath];
         [writeHandle writeData:[pathAndSources[path] dataUsingEncoding:NSUTF8StringEncoding]];
     }
 }

@@ -1,8 +1,16 @@
 object HelloWorld {
-	
-	daef main(args: Array[String]) = println("Hi!")
- 
+	val r = "adas"
+	def msub = r
+
+	def main(args: Array[String]) = println("Hi!")
+
 	println("hereComes")
 	val sda = 100
-	val a = "a"
-}}
+	val a = "a";
+	
+}
+
+
+
+
+

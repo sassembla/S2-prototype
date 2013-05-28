@@ -137,9 +137,9 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
             }
         },
         {
-            "monocastMessage": {
-                "target": "S2Client",
-                "message": "-compile"
+            "eventEmit": {
+                "target": "scala",
+                "event": "event_S2compile"
             }
         }
     ]
@@ -160,11 +160,24 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
         }
     ]
 }
-->保存時のcompile/setReactor: 
+->STでの保存時のcompile/setReactor: 
 {
     "target": "scala",
     "event": "on_post_save",
     "interval": 100,
+    "selectors": [
+        {
+            "monocastMessage": {
+                "target": "S2Client",
+                "message": "-compile"
+            }
+        }
+    ]
+}
+->コード更新時のコンパイル/setReactor:
+{
+    "target": "scala",
+    "event": "event_S2compile",
     "selectors": [
         {
             "monocastMessage": {
