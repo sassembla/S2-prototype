@@ -1,0 +1,1 @@
+-execute /Users/mondogrosso/Desktop/S2/S2target/build.gradle,/Users/mondogrosso/Desktop/S2/S2target/src/main/scala/HelloWorld.scala
