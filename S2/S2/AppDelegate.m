@@ -315,7 +315,7 @@
     [self callParent:S2_EXEC_COMPILE_START];
     [self writeLogLine:@"compile!"];
 
-    NSArray * compileTaskArray = [self dummyCompile:codeDict];
+    NSArray * compileTaskArray = [self gradleCompile:codeDict];
     
     [m_tasks addObject:compileTaskArray];
     
