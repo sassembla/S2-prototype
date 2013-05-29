@@ -375,12 +375,14 @@
         [self writeLogLine:@"compile abort, no build targeting file"];
         return nil;
     }
-    [self writeLogLine:@"適当に"];
-    [self writeLogLine:currentCompileBasePath];
+    
     
     NSString * compileBasePath = [NSString stringWithFormat:@"%@%@", [self currentWorkPath], currentCompileBasePath];
+    [self writeLogLine:compileBasePath];
+    
     
     NSArray * currentParams = @[@"--daemon", @"-b", compileBasePath, @"build", @"-i"];
+    
     NSTask * compileTask = [[NSTask alloc]init];
     
     [compileTask setLaunchPath:@"/usr/local/bin/gradle"];
