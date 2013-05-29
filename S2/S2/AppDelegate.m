@@ -370,8 +370,9 @@
     }
     
     if (currentCompileBasePath) {
-        [self writeLogLine:@"compile abort, no build targeting file"];
+        
     } else {
+        [self writeLogLine:@"compile abort, no build targeting file"];
         return nil;
     }
     
