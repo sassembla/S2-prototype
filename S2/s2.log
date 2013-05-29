@@ -24,14 +24,11 @@ S2:S2 received:{
     messageCount = 6;
 }
 S2:compile!
-S2:compile abort, no build targeting file
+S2:適当に
+S2:/Users/mondogrosso/Desktop/S2/S2target/build.gradle
 S2:compile! task start
 S2:S2_MASTER
-S2:5615818B-0D52-4CC3-9CC9-1EBFAD9FB3E6
-S2:received
-S2:S2_MASTER
-S2:5615818B-0D52-4CC3-9CC9-1EBFAD9FB3E6
-S2:executed
+S2:1CAF11D4-EC96-450B-99C2-ACC28153C9CC
 S2:closing
 S2:S2_MASTER
-S2:5615818B-0D52-4CC3-9CC9-1EBFAD9FB3E6
+S2:1CAF11D4-EC96-450B-99C2-ACC28153C9CC
