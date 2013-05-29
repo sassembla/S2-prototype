@@ -308,6 +308,7 @@
     
     NSTask * currentTask = [self controlSR:TEST_SOCKETROUNDABOUT_8_EXECUTECHECK];
     
+    
     //コンパイルが完了する
     while (![m_flags containsObject:[NSNumber numberWithInt:S2_EXEC_COMPILE_FINISHED]]) {
         [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
@@ -316,6 +317,7 @@
     //この時点で、taskは空な筈
     NSArray * tasks = [appDel currentTasks];
     STAssertTrue([tasks count] == 0, @"mot match, %d", [tasks count]);
+    
     
     [currentTask terminate];
 }

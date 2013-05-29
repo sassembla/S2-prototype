@@ -68,32 +68,28 @@
 
 
 - (void) receiver:(NSNotification * )notif {
+    [self writeLogLine:@"received"];
+    
     NSDictionary * dict = [messenger tagValueDictionaryFromNotification:notif];
+    [self writeLogLine:[messenger myName]];
+    [self writeLogLine:[messenger myMID]];
     
     switch ([messenger execFrom:[messenger myName] viaNotification:notif]) {
         case S2_COMPILING:{
-            NSAssert(dict[@"process"], @"process required");
-            NSTask * task = dict[@"process"];
+            NSAssert(dict[@"processes"], @"processes required");
+            NSArray * tasks = dict[@"processes"];
+
+            //0番固定
+            NSTask * primaryTask = tasks[0];
             
-            if ([task isRunning]) {
-                [messenger callMyself:S2_COMPILING,
-                 [messenger tag:@"process" val:task],
-                 [messenger withDelay:CHECK_INTERVAL],
-                 nil];
-            } else {
-                NSArray * targetArray;
-                for (NSArray * taskArray in m_tasks) {
-                    if ([taskArray containsObject:task]) {
-                        targetArray = taskArray;
-                    }
-                }
-                if (targetArray) {
-                    [m_tasks removeObject:targetArray];
-                }
-                [self writeLogLine:@"over"];
-                [self callParent:S2_EXEC_COMPILE_FINISHED];
-            }
+            //ここで特定タスクのみ待つ
+            [primaryTask waitUntilExit];
             
+            
+            //終了したので、消す
+            [m_tasks removeObject:tasks];
+            [self writeLogLine:@"executed"];
+            [self callParent:S2_EXEC_COMPILE_FINISHED];            
             break;
         }
             
@@ -136,7 +132,6 @@
             [self update:[head componentsSeparatedByString:@":"][1] withSource:body];
         }
         
-        
         if ([head isEqualToString:KEY_COMPILE] || [head isEqualToString:KEY_COMPILE_DUMMY]) {
             [self compile:body];
         }
@@ -144,26 +139,6 @@
         if ([head isEqualToString:KEY_EXECUTE]) {
             [self execute:body];
             [self callParent:S2_EXEC_EXECUTE];
-        }
-        
-        if ([head isEqualToString:KEY_RESTART]) {
-            
-            [self reset];
-        }
-        
-        if ([head isEqualToString:KEY_KILL]) {
-            [[NSDistributedNotificationCenter defaultCenter]removeObserver:self name:m_settingDict[KEY_IDENTITY] object:nil];
-            
-            [self writeLogLine:MESSAGE_TEARDOWN];
-            
-            [m_settingDict removeAllObjects];
-            
-            //        if (m_bootFromApp) {
-            //
-            //        } else {
-            //            exit(0);
-            //        }
-            return;
         }
     }
     
@@ -219,6 +194,7 @@
     NSString * message = [[NSString alloc]initWithFormat:@"ss@readFileData:{\"path\":\"%@\"}->(data|message)monocastMessage:{\"target\":\"S2Client\",\"message\":\"replace\",\"header\":\"-update:%@ \"}->showAtLog:{\"message\":\"pulled:%@\"}->showStatusMessage:{\"message\":\"pulled:%@\"}", sourcePath, identity, sourcePath, sourcePath];
 
     NSLog(@"request is %@", message);
+    
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"FROMS2_IDENTITY" object:nil userInfo:@{@"message":message} deliverImmediately:YES];
     
     [self callParent:S2_EXEC_PULLING];
@@ -333,11 +309,58 @@
     [self compileScalaAt:m_codeDict];
 }
 
+
+- (void) compileScalaAt:(NSDictionary * )codeDict {
+    //Gradleでのコンパイル一択、だが、弄る事も出来る筈。
+    [self callParent:S2_EXEC_COMPILE_START];
+    [self writeLogLine:@"compile!"];
+
+    NSArray * compileTaskArray = [self dummyCompile:codeDict];
+    
+    [m_tasks addObject:compileTaskArray];
+    
+    [messenger callMyself:S2_COMPILING,
+     [messenger tag:@"processes" val:compileTaskArray],
+     [messenger withDelay:CHECK_INTERVAL],
+     nil];
+    
+    [self writeLogLine:@"compile! task start"];
+    [self writeLogLine:[messenger myName]];
+    [self writeLogLine:[messenger myMID]];
+}
+
+/**
+ より高確率で起こる！
+ */
+- (NSArray * )dummyCompile:(NSDictionary * )codeDict {
+        
+    NSTask * compileTask = [[NSTask alloc]init];
+    
+    [compileTask setLaunchPath:@"/bin/pwd"];
+    
+    NSPipe * currentOut = [[NSPipe alloc]init];
+    
+    [compileTask setStandardOutput:currentOut];
+    
+    NSTask * nnotifTask = [[NSTask alloc]init];
+    
+    [nnotifTask setLaunchPath:@"/Users/mondogrosso/Desktop/S2/tool/nnotif"];
+    [nnotifTask setArguments:@[@"-t", @"S2_OUT", @"--ignorebl"]];
+    
+    [nnotifTask setStandardInput:currentOut];
+    
+    [compileTask launch];
+    [nnotifTask launch];
+    
+    NSArray * taskArray = @[compileTask, nnotifTask];
+    return taskArray;
+}
+
+
 /**
  Gradleでのコンパイル
  */
-- (void) compileScalaAt:(NSDictionary * )codeDict {
-    
+- (NSArray * ) gradleCompile:(NSDictionary * )codeDict {
     NSString * currentCompileBasePath;
     //build.gradleを探し出す
     for (NSString * path in [codeDict allKeys]) {
@@ -347,15 +370,12 @@
     }
     
     if (currentCompileBasePath) {
-        
+        [self writeLogLine:@"compile abort, no build targeting file"];
     } else {
-        return;
+        return nil;
     }
     
     NSString * compileBasePath = [NSString stringWithFormat:@"%@%@", [self currentWorkPath], currentCompileBasePath];
-    
-    [self callParent:S2_EXEC_COMPILE_START];
-    NSLog(@"compile!");
     
     NSArray * currentParams = @[@"--daemon", @"-b", compileBasePath, @"build", @"-i"];
     NSTask * compileTask = [[NSTask alloc]init];
@@ -378,17 +398,8 @@
     [nnotifTask launch];
     
     NSArray * taskArray = @[compileTask, nnotifTask];
-    
-    [m_tasks addObject:taskArray];
-    
-    [messenger callMyself:S2_COMPILING,
-     [messenger tag:@"process" val:compileTask],
-     [messenger withDelay:CHECK_INTERVAL],
-     nil];
-    
-    NSLog(@"compile! task start");
+    return taskArray;
 }
-
 
 
 
@@ -513,8 +524,9 @@
  output
  */
 - (void) writeLogLine:(NSString * )message {
+    NSLog(@"log:%@", message);
     if (m_writeHandle) {
-        NSString * linedMessage = [NSString stringWithFormat:@"%@\n", message];
+        NSString * linedMessage = [NSString stringWithFormat:@"S2:%@\n", message];
         [m_writeHandle writeData:[linedMessage dataUsingEncoding:NSUTF8StringEncoding]];
     }
 }
@@ -549,6 +561,10 @@
 }
 
 - (void) close {
+    [self writeLogLine:@"closing"];
+    [self writeLogLine:[messenger myName]];
+    [self writeLogLine:[messenger myMID]];
+    
     [self reset];
     [self callParent:S2_EXEC_EXITED];
     [messenger closeConnection];

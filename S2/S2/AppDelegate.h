@@ -53,7 +53,6 @@ typedef enum {
 
 #define KEY_IDENTITY    (@"-i")
 #define KEY_OUTPUT      (@"-o")
-#define KEY_KILL        (@"-kill")
 
 //routing
 #define KEY_IGNITE      (@"-ignite")
@@ -62,7 +61,6 @@ typedef enum {
 #define KEY_COMPILE     (@"-compile")
 #define KEY_COMPILE_DUMMY   (@"S2-compile")
 #define KEY_EXECUTE     (@"-execute")
-#define KEY_RESTART     (@"-restart")
 
 
 #define MESSAGE_LAUNCHED    (@"S2 launched")
