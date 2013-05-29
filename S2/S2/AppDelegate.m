@@ -381,7 +381,7 @@
     [self writeLogLine:compileBasePath];
     
     
-    NSArray * currentParams = @[@"--daemon", @"-b", compileBasePath, @"build", @"-i", @"--debug"];
+    NSArray * currentParams = @[@"--daemon", @"-b", compileBasePath, @"build", @"-i"];
     
     NSTask * compileTask = [[NSTask alloc]init];
     
