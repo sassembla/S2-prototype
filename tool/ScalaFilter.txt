@@ -1,4 +1,4 @@
-ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。0.1.1/inputIdentity:
+ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイル。JSONで順を守って実行される。0.2.0/inputIdentity:
 {
     "id": "S2Client"
 }
@@ -11,19 +11,19 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
                 "selectors": [
                     {
                         "showStatusMessage": {
-                            "message": "groups[0]"
+                            "message": "filterSource[]"
                         }
                     },
                     {
                         "showAtLog": {
-                            "message": "groups[0]"
+                            "message": "filterSource[]"
                         }
                     },
                     {
                         "appendRegion": {
-                            "line": "groups[2]",
-                            "message": "\"groups[3]\"",
-                            "view": "groups[1]",
+                            "line": "groups[1]",
+                            "message": "\"groups[2]\"",
+                            "view": "groups[0]",
                             "condition": "keyword"
                         }
                     }
@@ -70,12 +70,12 @@ ss@Scalaのコンパイルとかの命令を一手に設定する設定ファイ
                 "selectors": [
                     {
                         "showStatusMessage": {
-                            "message": "groups[0]"
+                            "message": "filterSource[]"
                         }
                     },
                     {
                         "showAtLog": {
-                            "message": "groups[0]"
+                            "message": "filterSource[]"
                         }
                     }
                 ]
